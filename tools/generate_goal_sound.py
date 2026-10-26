@@ -12,8 +12,11 @@ SR = 44100
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 VARIANTS = {
-    # тёплый: середина, мягкие верхние обертоны
-    "a": dict(f0=392.0, dur=2.3, amps=[1.0, 0.42, 0.20, 0.10, 0.05], decays=[1.7, 1.2, 0.8, 0.5, 0.35],
+    # мягкий (по умолчанию): медленное начало, без верхних частот, тише
+    "a": dict(f0=329.63, dur=2.6, amps=[1.0, 0.22, 0.06, 0.015, 0.0], decays=[1.9, 1.3, 0.8, 0.5, 0.3],
+              shimmer=0.04, reverb=0.28, rev_len=1.3, seed=1, attack=0.40, lowpass=1800.0, peak_db=-9.0),
+    # прежний тёплый (резковат)
+    "old": dict(f0=392.0, dur=2.3, amps=[1.0, 0.42, 0.20, 0.10, 0.05], decays=[1.7, 1.2, 0.8, 0.5, 0.35],
               shimmer=0.10, reverb=0.22, rev_len=1.1, seed=1),
     # стеклянный: выше, ярче, длиннее звучат верхние частичные
     "b": dict(f0=659.25, dur=2.2, amps=[1.0, 0.35, 0.28, 0.22, 0.16], decays=[1.5, 1.2, 1.0, 0.8, 0.6],
@@ -25,7 +28,7 @@ VARIANTS = {
 RATIOS = [1.0, 2.0, 3.0, 4.2, 5.4]   # колокольчатые частичные
 
 
-def synth(f0, dur, amps, decays, shimmer, reverb, rev_len, seed):
+def synth(f0, dur, amps, decays, shimmer, reverb, rev_len, seed, attack=0.12, lowpass=None, peak_db=-3.0):
     rng = np.random.default_rng(seed)
     n = int(SR * dur)
     t = np.arange(n) / SR
@@ -37,7 +40,6 @@ def synth(f0, dur, amps, decays, shimmer, reverb, rev_len, seed):
     f = f0 * (1.0 + 0.5 * ease)
 
     # Мягкая атака ~120 мс
-    attack = 0.12
     env_a = np.where(t < attack, 0.5 - 0.5 * np.cos(np.pi * t / attack), 1.0)
 
     out = np.zeros((n, 2))
@@ -74,9 +76,17 @@ def synth(f0, dur, amps, decays, shimmer, reverb, rev_len, seed):
     fo = int(0.35 * SR)
     mix[-fo:] *= (np.cos(np.linspace(0, np.pi, fo)) * 0.5 + 0.5)[:, None]
 
-    # Пик −3 dBFS
+    # Срез верхних частот (плавный, через FFT)
+    if lowpass:
+        for ch in range(2):
+            spec = np.fft.rfft(mix[:, ch])
+            freqs = np.fft.rfftfreq(len(mix), 1 / SR)
+            spec *= 1.0 / (1.0 + (freqs / lowpass) ** 4)
+            mix[:, ch] = np.fft.irfft(spec, len(mix))
+
+    # Пик peak_db dBFS
     peak = np.max(np.abs(mix))
-    mix *= (10 ** (-3 / 20)) / peak
+    mix *= (10 ** (peak_db / 20)) / peak
     return mix
 
 

@@ -16,11 +16,11 @@ import java.time.LocalDate
 object Notifier {
     // Звук канала нельзя изменить после создания (Android 8+).
     // При смене звука увеличьте версию ID (goals_sound_v2) — старый канал удалится ниже.
-    const val CH_GOALS = "goals_sound_v1"
+    const val CH_GOALS = "goals_sound_v2"
     const val CH_GOALS_SILENT = "goals_silent_v1"
     const val CH_QUOTES = "quotes_v1"
     const val CH_ROUTINES = "routines_v1"
-    private val OLD_CHANNELS = listOf("reminders")
+    private val OLD_CHANNELS = listOf("reminders", "goals_sound_v1")
 
     private const val ID_GOALS = 1
     private const val ID_QUOTES = 2
