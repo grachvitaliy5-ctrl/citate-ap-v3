@@ -13,6 +13,11 @@ SZ=$(adb shell wm size | grep -o '[0-9]*x[0-9]*' | tail -1); W=${SZ%x*}; H=${SZ#
 adb shell input tap $((W/2)) $((H/2))
 sleep 30
 adb exec-out screencap -p > $OUT/02_entered.png
+adb shell uiautomator dump /sdcard/ui.xml && adb pull /sdcard/ui.xml $OUT/ui_path.xml
+PID=$(adb shell pidof $PKG | tr -d '\r')
+adb forward tcp:9222 localabstract:webview_devtools_remote_$PID
+sleep 2
+node tools/cdp_probe.js $OUT > $OUT/cdp.txt 2>&1
 sleep 20
 adb exec-out screencap -p > $OUT/03_ready.png
 # вкладки внизу: 5 штук
@@ -25,6 +30,14 @@ done
 adb shell input tap $((W/10)) $TY
 sleep 8
 adb exec-out screencap -p > $OUT/20_back_to_path.png
+# сравнение: та же сцена в простой Activity без Compose
+adb root; sleep 3
+adb shell am start -n $PKG/.DemoActivity
+sleep 25
+adb exec-out screencap -p > $OUT/30_demo.png
+adb shell input tap $((W/2)) $((H/2))
+sleep 25
+adb exec-out screencap -p > $OUT/31_demo_entered.png
 adb logcat -d > $OUT/logcat_full.txt
 grep -E "PathJS|PATH-|chromium|AndroidRuntime|FATAL|cr_|WebView|$PKG" $OUT/logcat_full.txt > $OUT/logcat.txt || true
 exit 0
