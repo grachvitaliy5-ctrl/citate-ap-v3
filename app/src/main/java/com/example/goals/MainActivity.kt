@@ -26,10 +26,11 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -92,22 +93,20 @@ fun App(resumeTick: Int, requestedTab: Int, onTabConsumed: () -> Unit) {
             onTabConsumed()
         }
     }
-    LaunchedEffect(tab) {
+    LaunchedEffect(Unit) {
         val act = ctx as? ComponentActivity ?: return@LaunchedEffect
-        if (tab == 0) {
-            act.enableEdgeToEdge(
-                statusBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT)
-            )
-        } else {
-            act.enableEdgeToEdge()
-        }
+        act.enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT)
+        )
     }
 
-    Column(Modifier.fillMaxSize().background(if (tab == 0) SceneBg else c.bg).statusBarsPadding().imePadding()) {
+    Column(Modifier.fillMaxSize().background(SceneBg).statusBarsPadding().imePadding()) {
         Box(Modifier.weight(1f)) {
             PathHost(visible = tab == 0)
             if (tab != 0) {
-                Box(Modifier.fillMaxSize().background(c.bg)) {
+                Box(Modifier.fillMaxSize().background(SceneBg)) {
+                    SceneBackdrop()
                     Crossfade(targetState = tab, animationSpec = tween(180), label = "tabs") { t ->
                         when (t) {
                             1 -> ItemsScreen("goals")
@@ -146,23 +145,21 @@ fun ItemsScreen(kind: String) {
         item {
             ScreenHeader(
                 title = if (isQuotes) "Цитаты" else "Цели",
-                subtitle = "Напоминаний можно добавить сколько угодно",
+                subtitle = if (isQuotes) "Слова, что ведут по пути" else "То, к чему идёт самурай",
                 actionLabel = "Добавить",
                 onAction = { adding = true }
             )
-            Line()
         }
         item { RemindersSection(kind) }
         item {
             val modes = listOf("all" to "Все", "seq" to "По очереди", "random" to "Случайно")
-            Text(
-                "Что показывать", style = Type.caption, color = c.muted,
-                modifier = Modifier.padding(start = Space.m, end = Space.m, top = Space.m, bottom = Space.s)
-            )
-            val cur = if (modeTick >= 0) store.mode(kind) else ""
-            Segmented(modes, cur, { store.setMode(kind, it); modeTick++ }, Modifier.padding(horizontal = Space.m))
-            Spacer(Modifier.height(Space.m))
-            Line()
+            WoodPanel {
+                Text("ЧТО ПОКАЗЫВАТЬ В УВЕДОМЛЕНИИ", style = Type.label, color = c.accent)
+                Spacer(Modifier.height(Space.s))
+                val cur = if (modeTick >= 0) store.mode(kind) else ""
+                Segmented(modes, cur, { store.setMode(kind, it); modeTick++ })
+            }
+            SectionLabel(if (isQuotes) "Цитаты" else "Цели")
         }
         if (list.isEmpty()) {
             item {
@@ -173,37 +170,34 @@ fun ItemsScreen(kind: String) {
             }
         }
         items(list, key = { it.id }) { item ->
-            Row(
-                Modifier.fillMaxWidth().clickable { editing = item }
-                    .padding(horizontal = Space.m, vertical = Space.m),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(Modifier.weight(1f)) {
-                    val tc = if (item.enabled) c.text else c.muted
-                    if (isQuotes) {
-                        Text("«${item.text}»", style = Type.quote, color = tc)
-                        if (item.author.isNotBlank()) {
-                            Spacer(Modifier.height(Space.s))
-                            Text(item.author.uppercase(), style = Type.label, color = c.muted)
+            PaperCard(strip = if (item.enabled) c.sakura else c.paperShade, onClick = { editing = item }) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        val tc = if (item.enabled) c.ink else Color(0xFF8A7458)
+                        if (isQuotes) {
+                            Text("«${item.text}»", style = Type.quote, color = tc)
+                            if (item.author.isNotBlank()) {
+                                Spacer(Modifier.height(Space.s))
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Box(Modifier.size(10.dp).background(c.seal))
+                                    Spacer(Modifier.width(6.dp))
+                                    Text(item.author.uppercase(), style = Type.label, color = Color(0xFF6A5440))
+                                }
+                            }
+                        } else {
+                            Text(item.text, style = Type.body, color = tc)
                         }
-                    } else {
-                        Text(item.text, style = Type.body, color = tc)
                     }
-                }
-                Spacer(Modifier.width(Space.m))
-                Switch(
-                    checked = item.enabled,
-                    onCheckedChange = { on ->
+                    Spacer(Modifier.width(Space.s))
+                    PixelSwitch(item.enabled) { on ->
                         val i = list.indexOfFirst { it.id == item.id }
                         if (i >= 0) {
                             list[i] = item.copy(enabled = on)
                             persist()
                         }
-                    },
-                    colors = appSwitchColors()
-                )
+                    }
+                }
             }
-            Line(Modifier.padding(horizontal = Space.m))
         }
     }
 
@@ -279,37 +273,32 @@ fun RemindersSection(kind: String) {
         Scheduler.scheduleAll(ctx)
     }
 
-    Column(Modifier.fillMaxWidth()) {
-        Text(
-            "НАПОМИНАНИЯ", style = Type.label, color = c.muted,
-            modifier = Modifier.padding(start = Space.m, end = Space.m, top = Space.m, bottom = Space.xs)
-        )
+    WoodPanel {
+        Text("НАПОМИНАНИЯ", style = Type.label, color = c.accent)
+        Spacer(Modifier.height(Space.xs))
+        if (list.isEmpty()) Text("Пока нет ни одного.", style = Type.caption, color = c.muted)
         list.forEach { r ->
             Row(
-                Modifier.fillMaxWidth().clickable { editing = r }
-                    .padding(horizontal = Space.m, vertical = Space.s),
+                Modifier.fillMaxWidth().clickable { editing = r }.padding(vertical = 6.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                Box(Modifier.size(8.dp).background(if (r.enabled) c.sakura else c.line))
+                Spacer(Modifier.width(10.dp))
                 Text(
                     r.describe(), style = Type.body,
                     color = if (r.enabled) c.text else c.muted, modifier = Modifier.weight(1f)
                 )
-                Switch(
-                    checked = r.enabled,
-                    onCheckedChange = { on ->
-                        val i = list.indexOfFirst { it.id == r.id }
-                        if (i >= 0) {
-                            list[i] = r.copy(enabled = on)
-                            persist()
-                        }
-                    },
-                    colors = appSwitchColors()
-                )
+                PixelSwitch(r.enabled) { on ->
+                    val i = list.indexOfFirst { it.id == r.id }
+                    if (i >= 0) {
+                        list[i] = r.copy(enabled = on)
+                        persist()
+                    }
+                }
             }
         }
-        Row(Modifier.padding(horizontal = Space.s)) {
-            TextAction("Добавить напоминание", { adding = true })
-        }
+        Spacer(Modifier.height(Space.s))
+        GhostButton("+ Напоминание", { adding = true }, Modifier.fillMaxWidth())
     }
 
     if (adding || editing != null) {

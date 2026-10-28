@@ -3,10 +3,10 @@
     android:height="24dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <group android:pivotX="54" android:pivotY="54" android:rotation="22">
+    <group android:pivotX="54" android:pivotY="54" android:rotation="-12">
         <path
             android:fillColor="#FFFFFFFF"
             android:fillType="evenOdd"
-            android:pathData="M54,30 C51,23 41,22 38,32 C35,43 41,60 54,80 C67,60 73,43 70,32 C67,22 57,23 54,30 Z M46.6,60 A4.4,3.5 0 1,0 55.4,60 A4.4,3.5 0 1,0 46.6,60 Z M54.2,41 L56.4,41 L56.4,60 L54.2,60 Z M56.4,41 C60,42.5 63,46 62,51 C60.5,47.5 58.5,46.8 56.4,46.4 Z" />
+            android:pathData="M54,27 L50.6,22.6 C44,20.6 35.5,23 31.5,31 C26.5,42 35.5,58 45.5,71.5 C49.5,77 52,81.5 54,87 C56,81.5 58.5,77 62.5,71.5 C72.5,58 81.5,42 76.5,31 C72.5,23 64,20.6 57.4,22.6 Z M44.6,60 A5.6,4.3 -18 1,0 55.8,56.6 A5.6,4.3 -18 1,0 44.6,60 Z M53.4,35 L56.2,35 L56.2,57.6 L53.4,57.6 Z M56.2,35 C61,36.8 65,41.2 63.8,47.6 C62,43.4 59.2,42.4 56.2,41.9 Z" />
     </group>
 </vector>

@@ -1,7 +1,6 @@
 package com.example.goals
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -74,30 +71,27 @@ fun NotesScreen(resumeTick: Int) {
                 actionLabel = "Добавить",
                 onAction = { adding = true }
             )
-            Line()
         }
         item {
-            Row(
-                Modifier.fillMaxWidth().padding(horizontal = Space.s, vertical = Space.xs),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TextAction("‹", { month = month.minusMonths(1) }, c.text)
-                Box(
-                    Modifier.weight(1f).clickable {
-                        month = YearMonth.now()
-                        selected = LocalDate.now()
-                    },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("${MONTHS[month.monthValue - 1]} ${month.year}", style = Type.heading, color = c.text)
+            WoodPanel {
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    GhostButton("‹", { month = month.minusMonths(1) })
+                    Box(
+                        Modifier.weight(1f).clickable {
+                            month = YearMonth.now()
+                            selected = LocalDate.now()
+                        },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("${MONTHS[month.monthValue - 1]} ${month.year}".uppercase(), style = Type.button, color = c.paper)
+                    }
+                    GhostButton("›", { month = month.plusMonths(1) })
                 }
-                TextAction("›", { month = month.plusMonths(1) }, c.text)
-            }
-            Column(Modifier.padding(horizontal = Space.s)) {
+                Spacer(Modifier.height(Space.s))
                 Row(Modifier.fillMaxWidth()) {
                     DOW.forEach {
                         Text(
-                            it, style = Type.label, color = c.muted, textAlign = TextAlign.Center,
+                            it.uppercase(), style = Type.label, color = c.muted, textAlign = TextAlign.Center,
                             modifier = Modifier.weight(1f).padding(vertical = Space.xs)
                         )
                     }
@@ -110,7 +104,7 @@ fun NotesScreen(resumeTick: Int) {
                         for (col in 0 until 7) {
                             val dayNum = r * 7 + col - offset + 1
                             if (dayNum < 1 || dayNum > len) {
-                                Spacer(Modifier.weight(1f).height(48.dp))
+                                Spacer(Modifier.weight(1f).height(46.dp))
                             } else {
                                 val date = month.atDay(dayNum)
                                 DayCell(
@@ -125,8 +119,6 @@ fun NotesScreen(resumeTick: Int) {
                     }
                 }
             }
-            Spacer(Modifier.height(Space.s))
-            Line()
         }
         item {
             SectionLabel("${selected.dayOfMonth} ${MONTHS_GEN[selected.monthValue - 1]} ${selected.year}")
@@ -135,17 +127,13 @@ fun NotesScreen(resumeTick: Int) {
             item { EmptyState("На этот день заметок нет.", "Добавить заметку") { adding = true } }
         }
         items(dayNotes, key = { it.id }) { n ->
-            Column(
-                Modifier.fillMaxWidth().clickable { editing = n }
-                    .padding(horizontal = Space.m, vertical = Space.m)
-            ) {
-                Text(n.text, style = Type.body, color = c.text)
+            PaperCard(strip = if (n.time >= 0) c.sakura else null, onClick = { editing = n }) {
+                Text(n.text, style = Type.body, color = c.ink)
                 if (n.time >= 0) {
                     Spacer(Modifier.height(Space.xs))
-                    Text("Напоминание в ${hhmm(n.time)}", style = Type.caption, color = c.muted)
+                    Text("НАПОМИНАНИЕ В ${hhmm(n.time)}", style = Type.label, color = Color(0xFF6A5440))
                 }
             }
-            Line(Modifier.padding(horizontal = Space.m))
         }
     }
 
@@ -185,19 +173,24 @@ private fun DayCell(
     onClick: () -> Unit
 ) {
     val c = LocalAppColors.current
-    val bg = if (selected) c.text else Color.Transparent
-    val fg = if (selected) c.bg else c.text
-    var m = modifier.height(48.dp).clip(AppShape).background(bg)
-    if (isToday && !selected) m = m.border(1.dp, c.accent, AppShape)
-    Box(m.clickable(onClick = onClick), contentAlignment = Alignment.Center) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            Text(num.toString(), style = Type.body, color = fg)
-            Box(
-                Modifier.size(5.dp).background(
-                    if (hasNotes) (if (selected) c.bg else c.accent) else Color.Transparent,
-                    CircleShape
-                )
-            )
+    val fill = when {
+        selected -> c.accent
+        hasNotes -> c.paper
+        else -> c.fog
+    }
+    val edge = when {
+        isToday -> c.sakura
+        selected -> c.outline
+        else -> c.line
+    }
+    val fg = if (selected || hasNotes) c.ink else c.text
+    Box(
+        modifier.padding(2.dp).height(42.dp).pixelPanel(fill, edge, shadow = 0.dp).clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(num.toString(), style = Type.body, color = fg)
+        if (hasNotes) {
+            Box(Modifier.align(Alignment.TopEnd).padding(5.dp).size(6.dp).background(c.seal))
         }
     }
 }

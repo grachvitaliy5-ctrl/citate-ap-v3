@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -66,22 +68,22 @@ fun SettingsScreen(resumeTick: Int) {
     Column(
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = Space.xl)
     ) {
-        ScreenHeader("Ещё")
-        Line()
+        ScreenHeader("Ещё", "Мелодии, дни и разрешения")
 
         SectionLabel("Мелодии уведомлений")
+        WoodPanel {
         Text(
             "У каждой функции своя мелодия. По умолчанию звучит мелодия самурая. " +
                 "Можно выбрать любую мелодию острова, которую вы собрали на вкладке «Путь».",
             style = Type.caption, color = c.muted,
-            modifier = Modifier.padding(horizontal = Space.m, vertical = Space.s)
+            modifier = Modifier.padding(vertical = Space.s)
         )
         for ((fn, title) in FUNCTIONS) {
             ValueRow(title, if (refresh >= 0) soundLabel(store, fn) else "") { melodyFor = fn }
         }
         Spacer(Modifier.height(Space.s))
         Row(
-            Modifier.fillMaxWidth().padding(horizontal = Space.m),
+            Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(Space.s)
         ) {
             GhostButton("Проверить цели", {
@@ -95,16 +97,17 @@ fun SettingsScreen(resumeTick: Int) {
                 }.start()
             }, Modifier.weight(1f))
         }
+        }
 
         SectionLabel("Рутины")
+        WoodPanel {
         Text(
             "Начало нового дня", style = Type.caption, color = c.muted,
-            modifier = Modifier.padding(start = Space.m, end = Space.m, bottom = Space.s)
+            modifier = Modifier.padding(bottom = Space.s)
         )
         Segmented(
             listOf(0 to "00:00", 4 to "04:00"), store.dayStartHour,
-            { store.dayStartHour = it; tick++ },
-            Modifier.padding(horizontal = Space.m)
+            { store.dayStartHour = it; tick++ }
         )
         Spacer(Modifier.height(Space.s))
         ToggleRow("Вечернее напоминание", "В 21:00, если остались незажжённые фонари", store.eveningReminder) {
@@ -115,11 +118,13 @@ fun SettingsScreen(resumeTick: Int) {
         Text(
             "Название, фонарь и время напоминания каждой рутины настраиваются кнопкой «Редактор» на вкладке «Путь».",
             style = Type.caption, color = c.muted,
-            modifier = Modifier.padding(horizontal = Space.m, vertical = Space.s)
+            modifier = Modifier.padding(vertical = Space.s)
         )
+        }
 
         SectionLabel("Сцена")
-        Row(Modifier.fillMaxWidth().padding(horizontal = Space.m)) {
+        WoodPanel {
+        Row(Modifier.fillMaxWidth()) {
             GhostButton("Открыть демо сцены", {
                 ctx.startActivity(Intent(ctx, DemoActivity::class.java))
             }, Modifier.fillMaxWidth())
@@ -127,10 +132,12 @@ fun SettingsScreen(resumeTick: Int) {
         Text(
             "В демо можно перемотать цикл и сменить день. Настоящий прогресс при этом не меняется.",
             style = Type.caption, color = c.muted,
-            modifier = Modifier.padding(horizontal = Space.m, vertical = Space.s)
+            modifier = Modifier.padding(vertical = Space.s)
         )
+        }
 
         SectionLabel("Система")
+        WoodPanel {
         val nm = ctx.getSystemService(NotificationManager::class.java)
         val am = ctx.getSystemService(AlarmManager::class.java)
         val pm = ctx.getSystemService(PowerManager::class.java)
@@ -158,8 +165,9 @@ fun SettingsScreen(resumeTick: Int) {
             "Громкость звука задаётся ползунком уведомлений на телефоне. " +
                 "На Xiaomi, Samsung, Huawei также включите автозапуск в настройках приложения.",
             style = Type.caption, color = c.muted,
-            modifier = Modifier.padding(horizontal = Space.m, vertical = Space.s)
+            modifier = Modifier.padding(vertical = Space.s)
         )
+        }
     }
 
     val fn = melodyFor
@@ -233,7 +241,7 @@ private fun MelodyOption(
         Modifier.fillMaxWidth().heightIn(min = 56.dp).clickable(onClick = onSelect),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(if (selected) "●" else "○", style = Type.body, color = if (selected) c.accent else c.muted)
+        Box(Modifier.size(14.dp).pixelPanel(if (selected) c.accent else c.bg, if (selected) c.outline else c.line, shadow = 0.dp))
         Column(Modifier.weight(1f).padding(horizontal = Space.s)) {
             Text(title, style = Type.body, color = c.text)
             Text(subtitle, style = Type.caption, color = c.muted)
@@ -247,14 +255,14 @@ fun PermissionRow(title: String, ok: Boolean, onFix: () -> Unit) {
     val c = LocalAppColors.current
     Row(
         Modifier.fillMaxWidth().clickable(enabled = !ok, onClick = onFix)
-            .padding(horizontal = Space.m, vertical = Space.m),
+            .padding(horizontal = Space.s, vertical = Space.m),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(title, style = Type.body, color = c.text, modifier = Modifier.weight(1f))
         Text(
             if (ok) "Включено" else "Включить",
-            style = Type.body.copy(fontWeight = FontWeight.Medium),
-            color = if (ok) c.muted else c.accent
+            style = Type.body,
+            color = if (ok) c.green else c.accent
         )
     }
 }
