@@ -1,7 +1,7 @@
 name: Build APK
 on:
   push:
-    branches: [main, master, path-v3]
+    branches: [main, master]
   workflow_dispatch:
 permissions:
   contents: write
