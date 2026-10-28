@@ -1,24 +1,12 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-    <path
-        android:fillColor="#00000000"
-        android:strokeColor="#FFFFFFFF"
-        android:strokeWidth="2"
-        android:strokeLineCap="round"
-        android:pathData="M6,15 A6,6 0 0,1 18,15" />
-    <path
-        android:fillColor="#00000000"
-        android:strokeColor="#FFFFFFFF"
-        android:strokeWidth="2"
-        android:strokeLineCap="round"
-        android:pathData="M3,15 L21,15" />
-    <path
-        android:fillColor="#00000000"
-        android:strokeColor="#FFFFFFFF"
-        android:strokeWidth="2"
-        android:strokeLineCap="round"
-        android:pathData="M12,5 L12,6.5" />
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group android:pivotX="54" android:pivotY="54" android:rotation="22">
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:fillType="evenOdd"
+            android:pathData="M54,30 C51,23 41,22 38,32 C35,43 41,60 54,80 C67,60 73,43 70,32 C67,22 57,23 54,30 Z M46.6,60 A4.4,3.5 0 1,0 55.4,60 A4.4,3.5 0 1,0 46.6,60 Z M54.2,41 L56.4,41 L56.4,60 L54.2,60 Z M56.4,41 C60,42.5 63,46 62,51 C60.5,47.5 58.5,46.8 56.4,46.4 Z" />
+    </group>
 </vector>

@@ -1,7 +1,7 @@
 name: Build APK
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, path-v3]
   workflow_dispatch:
 permissions:
   contents: write
@@ -17,8 +17,30 @@ jobs:
       - uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: 8.7
+      # Пиксельные шрифты сцены. Если скачать не удалось, сцена использует системный моно-шрифт.
+      - name: Download scene fonts
+        continue-on-error: true
+        run: |
+          mkdir -p app/src/main/assets/path/fonts
+          curl -fsSL -o app/src/main/assets/path/fonts/PressStart2P-Regular.ttf "https://github.com/google/fonts/raw/main/ofl/pressstart2p/PressStart2P-Regular.ttf"
+          curl -fsSL -o app/src/main/assets/path/fonts/PixelifySans.ttf "https://github.com/google/fonts/raw/main/ofl/pixelifysans/PixelifySans%5Bwght%5D.ttf"
+          ls -la app/src/main/assets/path/fonts
       - name: Build debug APK
-        run: gradle assembleDebug --stacktrace
+        id: build
+        run: gradle assembleDebug --stacktrace 2>&1 | tee /tmp/build.log; exit ${PIPESTATUS[0]}
+      # При ошибке сборки журнал сохраняется в ветку build-log, чтобы его можно было прочитать без входа на GitHub.
+      - name: Save build log on failure
+        if: failure()
+        run: |
+          cp /tmp/build.log /tmp/build-log.txt
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git checkout --orphan build-log
+          git rm -rf . > /dev/null
+          cp /tmp/build-log.txt ./build-log.txt
+          git add build-log.txt
+          git commit -m "Build log ${GITHUB_SHA}"
+          git push -f origin build-log
       - uses: actions/upload-artifact@v4
         with:
           name: app-debug

@@ -1,25 +1,20 @@
 package com.example.goals
 
 import android.Manifest
-import android.app.AlarmManager
-import android.app.NotificationManager
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.PowerManager
-import android.provider.Settings
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,11 +28,10 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -47,15 +41,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 
 class MainActivity : ComponentActivity() {
     private var resumeTick by mutableIntStateOf(0)
+    private var requestedTab by mutableIntStateOf(-1)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        requestedTab = intent.getIntExtra("tab", -1)
 
         if (Build.VERSION.SDK_INT >= 33 &&
             checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
@@ -65,8 +61,14 @@ class MainActivity : ComponentActivity() {
         Scheduler.scheduleAll(this)
 
         setContent {
-            AppTheme { App(resumeTick) }
+            AppTheme { App(resumeTick, requestedTab) { requestedTab = -1 } }
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        requestedTab = intent.getIntExtra("tab", -1)
     }
 
     override fun onResume() {
@@ -75,23 +77,53 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+private val SceneBg = Color(0xFF0B0A1F)
+
 @Composable
-fun App(resumeTick: Int) {
+fun App(resumeTick: Int, requestedTab: Int, onTabConsumed: () -> Unit) {
     val c = LocalAppColors.current
+    val ctx = LocalContext.current
     var tab by rememberSaveable { mutableIntStateOf(0) }
-    Column(Modifier.fillMaxSize().background(c.bg).statusBarsPadding()) {
+
+    LaunchedEffect(requestedTab) {
+        if (requestedTab in 0..4) {
+            tab = requestedTab
+            onTabConsumed()
+        }
+    }
+    LaunchedEffect(tab) {
+        val act = ctx as? ComponentActivity ?: return@LaunchedEffect
+        if (tab == 0) {
+            act.enableEdgeToEdge(
+                statusBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT)
+            )
+        } else {
+            act.enableEdgeToEdge()
+        }
+    }
+
+    Column(Modifier.fillMaxSize().background(if (tab == 0) SceneBg else c.bg).statusBarsPadding()) {
         Box(Modifier.weight(1f)) {
-            Crossfade(targetState = tab, animationSpec = tween(180), label = "tabs") { t ->
-                when (t) {
-                    0 -> ItemsScreen("goals")
-                    1 -> ItemsScreen("quotes")
-                    2 -> RoutinesScreen(resumeTick)
-                    else -> SettingsScreen(resumeTick)
+            PathHost(visible = tab == 0)
+            if (tab != 0) {
+                Box(Modifier.fillMaxSize().background(c.bg)) {
+                    Crossfade(targetState = tab, animationSpec = tween(180), label = "tabs") { t ->
+                        when (t) {
+                            1 -> ItemsScreen("goals")
+                            2 -> ItemsScreen("quotes")
+                            3 -> NotesScreen(resumeTick)
+                            else -> SettingsScreen(resumeTick)
+                        }
+                    }
                 }
             }
         }
-        TabBar(listOf("Цели", "Цитаты", "Рутины", "Настройки"), tab) { tab = it }
+        TabBar(listOf("Путь", "Цели", "Цитаты", "Заметки", "Ещё"), tab) { tab = it }
     }
+}
+
+fun pickTime(ctx: Context, minutes: Int, onPick: (Int) -> Unit) {
+    TimePickerDialog(ctx, { _, h, m -> onPick(h * 60 + m) }, minutes / 60, minutes % 60, true).show()
 }
 
 // ---------- Цели и цитаты ----------
@@ -104,6 +136,7 @@ fun ItemsScreen(kind: String) {
     val list = remember(kind) { mutableStateListOf<Item>().also { it.addAll(store.load(kind)) } }
     var editing by remember { mutableStateOf<Item?>(null) }
     var adding by remember { mutableStateOf(false) }
+    var modeTick by remember { mutableIntStateOf(0) }
     val isQuotes = kind == "quotes"
 
     fun persist() = store.save(kind, list.toList())
@@ -112,10 +145,22 @@ fun ItemsScreen(kind: String) {
         item {
             ScreenHeader(
                 title = if (isQuotes) "Цитаты" else "Цели",
-                subtitle = "Напоминания в ${hhmm(store.time(kind, 0))} и ${hhmm(store.time(kind, 1))}",
+                subtitle = "Напоминаний можно добавить сколько угодно",
                 actionLabel = "Добавить",
                 onAction = { adding = true }
             )
+            Line()
+        }
+        item { RemindersSection(kind) }
+        item {
+            val modes = listOf("all" to "Все", "seq" to "По очереди", "random" to "Случайно")
+            Text(
+                "Что показывать", style = Type.caption, color = c.muted,
+                modifier = Modifier.padding(start = Space.m, end = Space.m, top = Space.m, bottom = Space.s)
+            )
+            val cur = if (modeTick >= 0) store.mode(kind) else ""
+            Segmented(modes, cur, { store.setMode(kind, it); modeTick++ }, Modifier.padding(horizontal = Space.m))
+            Spacer(Modifier.height(Space.m))
             Line()
         }
         if (list.isEmpty()) {
@@ -217,134 +262,125 @@ fun ItemDialog(
     }
 }
 
-// ---------- Настройки ----------
-
-fun pickTime(ctx: Context, minutes: Int, onPick: (Int) -> Unit) {
-    TimePickerDialog(ctx, { _, h, m -> onPick(h * 60 + m) }, minutes / 60, minutes % 60, true).show()
-}
+// ---------- Напоминания: без ограничения числа ----------
 
 @Composable
-fun SettingsScreen(resumeTick: Int) {
+fun RemindersSection(kind: String) {
     val ctx = LocalContext.current
     val c = LocalAppColors.current
     val store = remember { Store(ctx) }
-    var tick by remember { mutableIntStateOf(0) }
-    // Чтение tick и resumeTick заставляет экран перерисоваться после изменений.
-    val refresh = tick + resumeTick
+    val list = remember(kind) { mutableStateListOf<Reminder>().also { it.addAll(store.reminders(kind)) } }
+    var editing by remember { mutableStateOf<Reminder?>(null) }
+    var adding by remember { mutableStateOf(false) }
 
-    val modes = listOf("all" to "Все", "seq" to "По очереди", "random" to "Случайно")
+    fun persist() {
+        store.saveReminders(kind, list.toList())
+        Scheduler.scheduleAll(ctx)
+    }
 
-    Column(
-        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = Space.xl)
-    ) {
-        ScreenHeader("Настройки")
-        Line()
-
-        for ((kind, title) in listOf("goals" to "Цели", "quotes" to "Цитаты")) {
-            SectionLabel(title)
-            for (slot in 0..1) {
-                ValueRow(
-                    if (slot == 0) "Первое напоминание" else "Второе напоминание",
-                    hhmm(store.time(kind, slot))
-                ) {
-                    pickTime(ctx, store.time(kind, slot)) {
-                        store.setTime(kind, slot, it)
-                        Scheduler.scheduleAll(ctx)
-                        tick++
-                    }
-                }
-            }
-            Text(
-                "Что показывать", style = Type.caption, color = c.muted,
-                modifier = Modifier.padding(start = Space.m, end = Space.m, top = Space.s, bottom = Space.s)
-            )
-            Segmented(
-                modes, store.mode(kind), { store.setMode(kind, it); tick++ },
-                Modifier.padding(horizontal = Space.m)
-            )
-            if (kind == "goals") {
-                Spacer(Modifier.height(Space.s))
-                ToggleRow(
-                    "Свой звук", "Короткий светлый звук «рассвет»",
-                    store.goalSound
-                ) { store.goalSound = it; tick++ }
-            }
-            Spacer(Modifier.height(Space.s))
-            Row(
-                Modifier.fillMaxWidth().padding(horizontal = Space.m),
-                horizontalArrangement = Arrangement.spacedBy(Space.s)
-            ) {
-                if (kind == "goals") {
-                    GhostButton("Прослушать", { Notifier.previewGoalSound(ctx) }, Modifier.weight(1f))
-                }
-                GhostButton("Проверить", { Notifier.show(ctx, kind) }, Modifier.weight(1f))
-            }
-        }
-
-        SectionLabel("Рутины")
+    Column(Modifier.fillMaxWidth()) {
         Text(
-            "Начало нового дня", style = Type.caption, color = c.muted,
-            modifier = Modifier.padding(start = Space.m, end = Space.m, bottom = Space.s)
+            "НАПОМИНАНИЯ", style = Type.label, color = c.muted,
+            modifier = Modifier.padding(start = Space.m, end = Space.m, top = Space.m, bottom = Space.xs)
         )
-        Segmented(
-            listOf(0 to "00:00", 4 to "04:00"), store.dayStartHour,
-            { store.dayStartHour = it; tick++ },
-            Modifier.padding(horizontal = Space.m)
-        )
-        Spacer(Modifier.height(Space.s))
-        ToggleRow("Вечернее напоминание", "В 21:00, если день не отмечен", store.eveningReminder) {
-            store.eveningReminder = it; tick++
-        }
-        ToggleRow("Итог недели", "В воскресенье в 21:00", store.weeklySummary) {
-            store.weeklySummary = it; tick++
-        }
-
-        SectionLabel("Система")
-        val nm = ctx.getSystemService(NotificationManager::class.java)
-        val am = ctx.getSystemService(AlarmManager::class.java)
-        val pm = ctx.getSystemService(PowerManager::class.java)
-        val notifOk = refresh >= 0 && nm.areNotificationsEnabled()
-        val exactOk = Build.VERSION.SDK_INT < 31 || am.canScheduleExactAlarms()
-        val batteryOk = pm.isIgnoringBatteryOptimizations(ctx.packageName)
-
-        PermissionRow("Уведомления", notifOk) {
-            ctx.startActivity(
-                Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                    .putExtra(Settings.EXTRA_APP_PACKAGE, ctx.packageName)
-            )
-        }
-        if (Build.VERSION.SDK_INT >= 31) {
-            PermissionRow("Точные будильники", exactOk) {
-                ctx.startActivity(
-                    Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:${ctx.packageName}"))
+        list.forEach { r ->
+            Row(
+                Modifier.fillMaxWidth().clickable { editing = r }
+                    .padding(horizontal = Space.m, vertical = Space.s),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    r.describe(), style = Type.body,
+                    color = if (r.enabled) c.text else c.muted, modifier = Modifier.weight(1f)
+                )
+                Switch(
+                    checked = r.enabled,
+                    onCheckedChange = { on ->
+                        val i = list.indexOfFirst { it.id == r.id }
+                        if (i >= 0) {
+                            list[i] = r.copy(enabled = on)
+                            persist()
+                        }
+                    },
+                    colors = appSwitchColors()
                 )
             }
         }
-        PermissionRow("Работа без ограничений батареи", batteryOk) {
-            ctx.startActivity(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
+        Row(Modifier.padding(horizontal = Space.s)) {
+            TextAction("Добавить напоминание", { adding = true })
         }
-        Text(
-            "Громкость звука задаётся ползунком уведомлений на телефоне. " +
-                "На Xiaomi, Samsung, Huawei также включите автозапуск в настройках приложения.",
-            style = Type.caption, color = c.muted,
-            modifier = Modifier.padding(horizontal = Space.m, vertical = Space.s)
+    }
+
+    if (adding || editing != null) {
+        val cur = editing
+        ReminderDialog(
+            initial = cur,
+            onDismiss = { adding = false; editing = null },
+            onSave = { r ->
+                if (cur != null) {
+                    val i = list.indexOfFirst { it.id == cur.id }
+                    if (i >= 0) list[i] = r.copy(id = cur.id)
+                } else {
+                    list.add(r.copy(id = System.currentTimeMillis()))
+                }
+                persist()
+                adding = false; editing = null
+            },
+            onDelete = {
+                if (cur != null) {
+                    list.removeAll { it.id == cur.id }
+                    persist()
+                }
+                adding = false; editing = null
+            }
         )
     }
 }
 
 @Composable
-fun PermissionRow(title: String, ok: Boolean, onFix: () -> Unit) {
+fun ReminderDialog(
+    initial: Reminder?,
+    onDismiss: () -> Unit,
+    onSave: (Reminder) -> Unit,
+    onDelete: () -> Unit
+) {
+    val ctx = LocalContext.current
     val c = LocalAppColors.current
-    Row(
-        Modifier.fillMaxWidth().clickable(enabled = !ok, onClick = onFix)
-            .padding(horizontal = Space.m, vertical = Space.m),
-        verticalAlignment = Alignment.CenterVertically
+    var interval by remember { mutableStateOf(initial?.interval ?: false) }
+    var time by remember { mutableIntStateOf(initial?.time ?: (9 * 60)) }
+    var every by remember { mutableStateOf((initial?.everyMin ?: 60).toString()) }
+    var from by remember { mutableIntStateOf(initial?.from ?: (9 * 60)) }
+    var to by remember { mutableIntStateOf(initial?.to ?: (21 * 60)) }
+    var armed by remember { mutableStateOf(false) }
+
+    AppDialog(
+        title = if (initial == null) "Новое напоминание" else "Напоминание",
+        onDismiss = onDismiss,
+        confirmLabel = "Сохранить",
+        onConfirm = {
+            val e = (every.toIntOrNull() ?: 60).coerceIn(1, 1440)
+            val end = maxOf(to, from + 1).coerceAtMost(1439)
+            onSave(Reminder(initial?.id ?: 0L, interval, time, e, from, end, initial?.enabled ?: true))
+        }
     ) {
+        Segmented(listOf(false to "В заданное время", true to "С интервалом"), interval, { interval = it })
+        if (!interval) {
+            ValueRowCompact("Время", hhmm(time)) { pickTime(ctx, time) { time = it } }
+        } else {
+            AppField(every, { v -> every = v.filter { it.isDigit() }.take(4) }, "Каждые, минут", singleLine = true)
+            ValueRowCompact("С", hhmm(from)) { pickTime(ctx, from) { from = it } }
+            ValueRowCompact("До", hhmm(to)) { pickTime(ctx, to) { to = it } }
+            Text("Напоминание повторяется в этом окне каждый день.", style = Type.caption, color = c.muted)
+        }
+        if (initial != null) DeleteAction(armed, { armed = true }, onDelete)
+    }
+}
+
+@Composable
+fun ValueRowCompact(title: String, value: String, onClick: () -> Unit) {
+    val c = LocalAppColors.current
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
         Text(title, style = Type.body, color = c.text, modifier = Modifier.weight(1f))
-        Text(
-            if (ok) "Включено" else "Включить",
-            style = Type.body.copy(fontWeight = FontWeight.Medium),
-            color = if (ok) c.muted else c.accent
-        )
+        TextAction(value, onClick)
     }
 }
