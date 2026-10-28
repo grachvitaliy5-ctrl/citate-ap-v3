@@ -2,7 +2,10 @@ package com.example.goals
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.View
+import android.webkit.ConsoleMessage
+import android.webkit.WebChromeClient
 import android.webkit.JavascriptInterface
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
@@ -69,6 +72,13 @@ fun createPathWebView(context: Context, demo: Boolean): WebView {
     wv.webViewClient = object : WebViewClient() {
         override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? =
             loader.shouldInterceptRequest(request.url)
+    }
+    WebView.setWebContentsDebuggingEnabled(true)
+    wv.webChromeClient = object : WebChromeClient() {
+        override fun onConsoleMessage(m: ConsoleMessage): Boolean {
+            Log.i("PathJS", "${m.messageLevel()} ${m.message()} @${m.sourceId()}:${m.lineNumber()}")
+            return true
+        }
     }
     wv.addJavascriptInterface(PathBridge(context), "Android")
     wv.loadUrl("https://appassets.androidplatform.net/assets/path/index.html" + if (demo) "?demo=1" else "")
