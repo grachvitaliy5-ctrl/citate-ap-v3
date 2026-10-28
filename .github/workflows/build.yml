@@ -72,11 +72,14 @@ jobs:
           (
             set -x
             export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH
+            export ANDROID_USER_HOME=$HOME/.android ANDROID_AVD_HOME=$HOME/.android/avd
+            mkdir -p $ANDROID_AVD_HOME
             yes | sdkmanager --licenses > /dev/null
             sdkmanager "emulator" "platform-tools" "system-images;android-33;google_apis;x86_64"
-            echo no | avdmanager create avd -n t -k "system-images;android-33;google_apis;x86_64" -d pixel_5
+            echo no | avdmanager create avd -n t -k "system-images;android-33;google_apis;x86_64" -d pixel_5 -p $ANDROID_AVD_HOME/t.avd
+            ls -la $ANDROID_AVD_HOME; emulator -list-avds
             nohup emulator -avd t -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot -camera-back none > results/emulator.log 2>&1 &
-            adb wait-for-device
+            timeout 600 adb wait-for-device
             for i in $(seq 1 120); do [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = "1" ] && break; sleep 5; done
             adb shell settings put global window_animation_scale 0
             adb shell settings put global transition_animation_scale 0
