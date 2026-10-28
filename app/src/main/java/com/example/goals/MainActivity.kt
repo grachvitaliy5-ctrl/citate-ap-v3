@@ -7,9 +7,16 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.webkit.WebView
+import android.widget.FrameLayout
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.ComposeView
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
-import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -46,9 +53,56 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-class MainActivity : ComponentActivity() {
+/** Где и когда показывать сцену. Сцена живёт в обычном WebView под Compose, а не внутри Compose. */
+interface PathHostControl {
+    fun placePath(left: Int, top: Int, width: Int, height: Int)
+    fun showPath(visible: Boolean)
+}
+
+val LocalPathHost = staticCompositionLocalOf<PathHostControl?> { null }
+
+class MainActivity : ComponentActivity(), PathHostControl {
     private var resumeTick by mutableIntStateOf(0)
     private var requestedTab by mutableIntStateOf(-1)
+    private lateinit var pathView: WebView
+    private var pathVisible = true
+
+    override fun placePath(left: Int, top: Int, width: Int, height: Int) {
+        val lp = pathView.layoutParams as FrameLayout.LayoutParams
+        if (lp.leftMargin == left && lp.topMargin == top && lp.width == width && lp.height == height) return
+        lp.leftMargin = left
+        lp.topMargin = top
+        lp.width = width
+        lp.height = height
+        pathView.layoutParams = lp
+    }
+
+    override fun showPath(visible: Boolean) {
+        if (visible == pathVisible) return
+        pathVisible = visible
+        if (visible) {
+            pathView.visibility = View.VISIBLE
+            pathView.onResume()
+            pathView.evaluateJavascript("window.pathResume&&window.pathResume()", null)
+        } else {
+            pathView.evaluateJavascript("window.pathSave&&window.pathSave()", null)
+            pathView.onPause()
+            pathView.visibility = View.INVISIBLE
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (::pathView.isInitialized) {
+            pathView.evaluateJavascript("window.pathSave&&window.pathSave()", null)
+            pathView.onPause()
+        }
+    }
+
+    override fun onDestroy() {
+        if (::pathView.isInitialized) pathView.destroy()
+        super.onDestroy()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,9 +116,18 @@ class MainActivity : ComponentActivity() {
         Notifier.ensureChannels(this)
         Scheduler.scheduleAll(this)
 
-        setContent {
-            AppTheme { App(resumeTick, requestedTab) { requestedTab = -1 } }
+        val root = FrameLayout(this)
+        root.setBackgroundColor(0xFF0B0A1F.toInt())
+        pathView = createPathWebView(this, false)
+        root.addView(pathView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+        val compose = ComposeView(this)
+        compose.setContent {
+            CompositionLocalProvider(LocalPathHost provides this) {
+                AppTheme { App(resumeTick, requestedTab) { requestedTab = -1 } }
+            }
         }
+        root.addView(compose, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+        setContentView(root)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -76,6 +139,10 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         resumeTick++
+        if (::pathView.isInitialized && pathVisible) {
+            pathView.onResume()
+            pathView.evaluateJavascript("window.pathResume&&window.pathResume()", null)
+        }
     }
 }
 
@@ -101,9 +168,16 @@ fun App(resumeTick: Int, requestedTab: Int, onTabConsumed: () -> Unit) {
         )
     }
 
-    Column(Modifier.fillMaxSize().background(SceneBg).statusBarsPadding().imePadding()) {
-        Box(Modifier.weight(1f)) {
-            PathHost(visible = tab == 0)
+    val host = LocalPathHost.current
+    LaunchedEffect(tab) { host?.showPath(tab == 0) }
+
+    Column(Modifier.fillMaxSize().statusBarsPadding().imePadding()) {
+        Box(
+            Modifier.weight(1f).fillMaxWidth().onGloballyPositioned { co ->
+                val r = co.boundsInRoot()
+                host?.placePath(r.left.toInt(), r.top.toInt(), r.width.toInt(), r.height.toInt())
+            }
+        ) {
             if (tab != 0) {
                 Box(Modifier.fillMaxSize().background(SceneBg)) {
                     SceneBackdrop()
