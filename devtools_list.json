@@ -1,0 +1,11 @@
+[
+ {
+  "description": "{\"attached\":true,\"empty\":false,\"height\":1962,\"never_attached\":false,\"screenX\":0,\"screenY\":136,\"visible\":true,\"width\":1080}",
+  "devtoolsFrontendUrl": "https://chrome-devtools-frontend.appspot.com/serve_internal_file/@534d8cb7b45e30c1cae4c5a67ec2fe92370d9711/inspector.html?ws=127.0.0.1:9222/devtools/page/DF79578BCF0616D07F913FD61BE79562",
+  "id": "DF79578BCF0616D07F913FD61BE79562",
+  "title": "Путь",
+  "type": "page",
+  "url": "https://appassets.androidplatform.net/assets/path/index.html",
+  "webSocketDebuggerUrl": "ws://127.0.0.1:9222/devtools/page/DF79578BCF0616D07F913FD61BE79562"
+ }
+]

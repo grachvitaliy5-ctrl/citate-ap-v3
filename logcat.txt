@@ -1,0 +1,223 @@
+10-29 15:14:47.393   936   936 D MediaPlayerList: Name of package changed: com.example.goals
+10-29 15:14:47.411   936   936 D MediaPlayerList: Name of package changed: com.example.goals
+10-29 15:14:47.440   964   964 D CarrierSvcBindHelper: onPackageAdded: com.example.goals
+10-29 15:14:47.449   964   964 D ImsResolver: maybeAddedImsService, packageName: com.example.goals
+10-29 15:14:47.449   485  1891 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=com.example.goals/.MainActivity} from uid 2000
+10-29 15:14:47.859   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{3ccfb71 com.google.android.apps.messaging/10112} BLOCKED
+10-29 15:14:47.859   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{d49ad56 com.google.android.gm/10144} BLOCKED
+10-29 15:14:47.859   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{1b331d7 com.google.android.partnersetup/10103} BLOCKED
+10-29 15:14:47.859   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{5c5eac4 com.android.remoteprovisioner/10150} BLOCKED
+10-29 15:14:47.859   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{a64ddad com.google.android.cellbroadcastreceiver/10171} BLOCKED
+10-29 15:14:48.237   485   516 I ActivityManager: Start proc 3617:com.example.goals/u0a174 for next-top-activity {com.example.goals/com.example.goals.MainActivity}
+10-29 15:14:48.327   485  1162 D CoreBackPreview: Window{84865df u0 Splash Screen com.example.goals}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@f87e73e, mPriority=0}
+10-29 15:14:48.347   936   936 D MediaPlayerList: Name of package changed: com.example.goals
+10-29 15:14:48.348   936   936 D MediaPlayerList: Name of package changed: com.example.goals
+10-29 15:14:48.496   485  1549 W BackupTransportManager: Package com.example.goals enabled setting: 0
+10-29 15:14:49.058  3617  3617 W ziparchive: Unable to open '/data/app/~~PLiN-PFonnulp2CID7vpWA==/com.example.goals-_zDHR_97D7UBTGpYK8vr-A==/base.dm': No such file or directory
+10-29 15:14:49.058  3617  3617 W ziparchive: Unable to open '/data/app/~~PLiN-PFonnulp2CID7vpWA==/com.example.goals-_zDHR_97D7UBTGpYK8vr-A==/base.dm': No such file or directory
+10-29 15:14:49.109   964   964 D CarrierSvcBindHelper: onPackageModified: com.example.goals
+10-29 15:14:49.186   964   964 D ImsResolver: maybeAddedImsService, packageName: com.example.goals
+10-29 15:14:49.324  3617  3617 D nativeloader: Configuring classloader-namespace for other apk /data/app/~~PLiN-PFonnulp2CID7vpWA==/com.example.goals-_zDHR_97D7UBTGpYK8vr-A==/base.apk. target_sdk_version=34, uses_libraries=, library_path=/data/app/~~PLiN-PFonnulp2CID7vpWA==/com.example.goals-_zDHR_97D7UBTGpYK8vr-A==/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.example.goals
+10-29 15:14:49.332  3617  3617 V GraphicsEnvironment: ANGLE Developer option for 'com.example.goals' set to: 'default'
+10-29 15:14:49.332  3617  3617 V GraphicsEnvironment: ANGLE GameManagerService for com.example.goals: false
+10-29 15:14:49.490  3617  3617 I WebViewFactory: Loading com.google.android.webview version 109.0.5414.123 (code 541412337)
+10-29 15:14:49.493  3617  3617 D nativeloader: Configuring classloader-namespace for other apk /data/app/~~4g-4QuBIiEk5FHdOmJklcg==/com.google.android.trichromelibrary_541412337-vGQrvFBP5rCARmnoumn1RA==/TrichromeLibrary.apk. target_sdk_version=33, uses_libraries=ALL, library_path=/data/app/~~yVCPNplOFHGPC7qc-aYNgQ==/com.google.android.webview-OYhNLn7HyyhZjJZnrG57cA==/lib/x86_64:/data/app/~~yVCPNplOFHGPC7qc-aYNgQ==/com.google.android.webview-OYhNLn7HyyhZjJZnrG57cA==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~4g-4QuBIiEk5FHdOmJklcg==/com.google.android.trichromelibrary_541412337-vGQrvFBP5rCARmnoumn1RA==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand
+10-29 15:14:49.497  3617  3617 D nativeloader: Configuring classloader-namespace for other apk /data/app/~~yVCPNplOFHGPC7qc-aYNgQ==/com.google.android.webview-OYhNLn7HyyhZjJZnrG57cA==/WebViewGoogle.apk. target_sdk_version=33, uses_libraries=, library_path=/data/app/~~yVCPNplOFHGPC7qc-aYNgQ==/com.google.android.webview-OYhNLn7HyyhZjJZnrG57cA==/lib/x86_64:/data/app/~~yVCPNplOFHGPC7qc-aYNgQ==/com.google.android.webview-OYhNLn7HyyhZjJZnrG57cA==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~4g-4QuBIiEk5FHdOmJklcg==/com.google.android.trichromelibrary_541412337-vGQrvFBP5rCARmnoumn1RA==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand
+10-29 15:14:49.544  3617  3617 I cr_WVCFactoryProvider: Loaded version=109.0.5414.123 minSdkVersion=29 isBundle=false multiprocess=true packageId=2
+10-29 15:14:49.567  3617  3682 I cr_VariationsUtils: Failed reading seed file "/data/user/0/com.example.goals/app_webview/variations_seed_new"
+10-29 15:14:49.568  3617  3682 I cr_VariationsUtils: Failed reading seed file "/data/user/0/com.example.goals/app_webview/variations_seed"
+10-29 15:14:49.568  3617  3682 I cr_VariationsUtils: Requesting new seed from IVariationsSeedServer
+10-29 15:14:49.575  3617  3617 I cr_LibraryLoader: Successfully loaded native library
+10-29 15:14:49.578  3617  3617 I cr_CachingUmaRecorder: Flushed 9 samples from 9 histograms.
+10-29 15:14:49.662   485   516 I ActivityManager: Start proc 3687:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0ai9000 for  {com.example.goals/org.chromium.content.app.SandboxedProcessService0:0}
+10-29 15:14:49.859  3617  3691 W chromium: [WARNING:dns_config_service_android.cc(115)] Failed to read DnsConfig.
+10-29 15:14:50.087  3617  3695 E chromium: [ERROR:simple_file_enumerator.cc(21)] opendir /data/user/0/com.example.goals/cache/WebView/Default/HTTP Cache/Code Cache/wasm: No such file or directory (2)
+10-29 15:14:50.088  3617  3695 E chromium: [ERROR:simple_index_file.cc(614)] Could not reconstruct index from disk
+10-29 15:14:50.088  3617  3691 E chromium: [ERROR:simple_file_enumerator.cc(21)] opendir /data/user/0/com.example.goals/cache/WebView/Default/HTTP Cache/Code Cache/js: No such file or directory (2)
+10-29 15:14:50.088  3617  3691 E chromium: [ERROR:simple_index_file.cc(614)] Could not reconstruct index from disk
+10-29 15:14:50.220   485   516 I ActivityManager: Start proc 3729:com.google.android.webview:webview_apk/u0a124 for service {com.google.android.webview/org.chromium.android_webview.nonembedded.AwComponentUpdateService}
+10-29 15:14:50.263  3687  3687 I cr_WebViewApkApp: Launched version=109.0.5414.123 minSdkVersion=29 isBundle=false processName=com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0
+10-29 15:14:50.269  3687  3687 I cr_ChildProcessService: Creating new ChildProcessService pid=3687
+10-29 15:14:50.422   485  2106 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{2d778b3 com.google.android.as/10117} BLOCKED
+10-29 15:14:50.477  3687  3735 I cr_LibraryLoader: Successfully loaded native library
+10-29 15:14:50.485  3617  3699 W cr_media: BLUETOOTH_CONNECT permission is missing.
+10-29 15:14:50.491  3617  3699 W cr_media: registerBluetoothIntentsIfNeeded: Requires BLUETOOTH permission
+10-29 15:14:50.493  3687  3735 I cr_CachingUmaRecorder: Flushed 3 samples from 3 histograms.
+10-29 15:14:50.525  3729  3729 D nativeloader: Configuring classloader-namespace for other apk /data/app/~~4g-4QuBIiEk5FHdOmJklcg==/com.google.android.trichromelibrary_541412337-vGQrvFBP5rCARmnoumn1RA==/TrichromeLibrary.apk. target_sdk_version=33, uses_libraries=ALL, library_path=/data/app/~~yVCPNplOFHGPC7qc-aYNgQ==/com.google.android.webview-OYhNLn7HyyhZjJZnrG57cA==/lib/x86_64:/data/app/~~yVCPNplOFHGPC7qc-aYNgQ==/com.google.android.webview-OYhNLn7HyyhZjJZnrG57cA==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~4g-4QuBIiEk5FHdOmJklcg==/com.google.android.trichromelibrary_541412337-vGQrvFBP5rCARmnoumn1RA==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.webview
+10-29 15:14:50.539  3729  3729 D nativeloader: Configuring classloader-namespace for other apk /data/app/~~yVCPNplOFHGPC7qc-aYNgQ==/com.google.android.webview-OYhNLn7HyyhZjJZnrG57cA==/WebViewGoogle.apk. target_sdk_version=33, uses_libraries=, library_path=/data/app/~~yVCPNplOFHGPC7qc-aYNgQ==/com.google.android.webview-OYhNLn7HyyhZjJZnrG57cA==/lib/x86_64:/data/app/~~yVCPNplOFHGPC7qc-aYNgQ==/com.google.android.webview-OYhNLn7HyyhZjJZnrG57cA==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~4g-4QuBIiEk5FHdOmJklcg==/com.google.android.trichromelibrary_541412337-vGQrvFBP5rCARmnoumn1RA==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.webview
+10-29 15:14:50.595   485  1902 D CoreBackPreview: Window{7c0ecc9 u0 com.example.goals/com.example.goals.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@8bc8083, mPriority=0}
+10-29 15:14:50.819  3729  3729 I cr_WebViewApkApp: Launched version=109.0.5414.123 minSdkVersion=29 isBundle=false processName=com.google.android.webview:webview_apk
+10-29 15:14:50.868  3729  3729 I cr_LibraryLoader: Successfully loaded native library
+10-29 15:14:51.074  3729  3789 W cr_AWNetworkFetcherTask: IOException during downloadToFile.
+10-29 15:14:51.074  3729  3789 W cr_AWNetworkFetcherTask: java.io.IOException: Cleartext HTTP traffic to edgedl.me.gvt1.com not permitted
+10-29 15:14:51.074  3729  3789 W cr_AWNetworkFetcherTask: 	at com.android.okhttp.HttpHandler$CleartextURLFilter.checkURLPermitted(HttpHandler.java:127)
+10-29 15:14:51.074  3729  3789 W cr_AWNetworkFetcherTask: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.execute(HttpURLConnectionImpl.java:462)
+10-29 15:14:51.074  3729  3789 W cr_AWNetworkFetcherTask: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.getResponse(HttpURLConnectionImpl.java:411)
+10-29 15:14:51.074  3729  3789 W cr_AWNetworkFetcherTask: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.getResponseCode(HttpURLConnectionImpl.java:542)
+10-29 15:14:51.074  3729  3789 W cr_AWNetworkFetcherTask: 	at org.chromium.android_webview.nonembedded.NetworkFetcherTask.download(chromium-TrichromeWebViewGoogle6432.apk-stable-541412337:48)
+10-29 15:14:51.074  3729  3789 W cr_AWNetworkFetcherTask: IOException during downloadToFile.
+10-29 15:14:51.074  3729  3789 W cr_AWNetworkFetcherTask: java.io.IOException: Cleartext HTTP traffic to redirector.gvt1.com not permitted
+10-29 15:14:51.074  3729  3789 W cr_AWNetworkFetcherTask: 	at com.android.okhttp.HttpHandler$CleartextURLFilter.checkURLPermitted(HttpHandler.java:127)
+10-29 15:14:51.074  3729  3789 W cr_AWNetworkFetcherTask: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.execute(HttpURLConnectionImpl.java:462)
+10-29 15:14:51.074  3729  3789 W cr_AWNetworkFetcherTask: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.getResponse(HttpURLConnectionImpl.java:411)
+10-29 15:14:51.074  3729  3789 W cr_AWNetworkFetcherTask: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.getResponseCode(HttpURLConnectionImpl.java:542)
+10-29 15:14:51.074  3729  3789 W cr_AWNetworkFetcherTask: 	at org.chromium.android_webview.nonembedded.NetworkFetcherTask.download(chromium-TrichromeWebViewGoogle6432.apk-stable-541412337:48)
+10-29 15:14:51.257  3729  3787 W cr_AWNetworkFetcherTask: IOException during downloadToFile.
+10-29 15:14:51.257  3729  3787 W cr_AWNetworkFetcherTask: java.io.IOException: Cleartext HTTP traffic to edgedl.me.gvt1.com not permitted
+10-29 15:14:51.257  3729  3787 W cr_AWNetworkFetcherTask: 	at com.android.okhttp.HttpHandler$CleartextURLFilter.checkURLPermitted(HttpHandler.java:127)
+10-29 15:14:51.257  3729  3787 W cr_AWNetworkFetcherTask: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.execute(HttpURLConnectionImpl.java:462)
+10-29 15:14:51.257  3729  3787 W cr_AWNetworkFetcherTask: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.getResponse(HttpURLConnectionImpl.java:411)
+10-29 15:14:51.257  3729  3787 W cr_AWNetworkFetcherTask: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.getResponseCode(HttpURLConnectionImpl.java:542)
+10-29 15:14:51.257  3729  3787 W cr_AWNetworkFetcherTask: 	at org.chromium.android_webview.nonembedded.NetworkFetcherTask.download(chromium-TrichromeWebViewGoogle6432.apk-stable-541412337:48)
+10-29 15:14:51.331  3729  3789 W cr_AWNetworkFetcherTask: IOException during downloadToFile.
+10-29 15:14:51.331  3729  3789 W cr_AWNetworkFetcherTask: java.io.IOException: Cleartext HTTP traffic to edgedl.me.gvt1.com not permitted
+10-29 15:14:51.331  3729  3789 W cr_AWNetworkFetcherTask: 	at com.android.okhttp.HttpHandler$CleartextURLFilter.checkURLPermitted(HttpHandler.java:127)
+10-29 15:14:51.331  3729  3789 W cr_AWNetworkFetcherTask: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.execute(HttpURLConnectionImpl.java:462)
+10-29 15:14:51.331  3729  3789 W cr_AWNetworkFetcherTask: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.getResponse(HttpURLConnectionImpl.java:411)
+10-29 15:14:51.331  3729  3789 W cr_AWNetworkFetcherTask: 	at com.android.okhttp.internal.huc.HttpURLConnectionImpl.getResponseCode(HttpURLConnectionImpl.java:542)
+10-29 15:14:51.331  3729  3789 W cr_AWNetworkFetcherTask: 	at org.chromium.android_webview.nonembedded.NetworkFetcherTask.download(chromium-TrichromeWebViewGoogle6432.apk-stable-541412337:48)
+10-29 15:14:51.623  3617  3617 W View    : requestLayout() improperly called by android.webkit.WebView{e75d54e VFEDHVC.. ......ID 0,0-1080,2340} during layout: running second layout pass
+10-29 15:14:51.974  1040  3351 I FontLog : Package com.example.goals has no metadata [CONTEXT service_id=132 ]
+10-29 15:14:52.095  2725  2960 I cr_VariationsUtils: Throttling seed download job
+10-29 15:14:52.096  2725  2960 I cr_VariationsUtils: Writing new seed to app's data directory
+10-29 15:14:52.206   485   504 W ziparchive: Unable to open '/data/app/~~PLiN-PFonnulp2CID7vpWA==/com.example.goals-_zDHR_97D7UBTGpYK8vr-A==/base.dm': No such file or directory
+10-29 15:14:52.359  1258  3485 I BlockstoreStorage: Clearing Blockstore Data for package com.example.goals [CONTEXT service_id=258 ]
+10-29 15:14:52.409   485   504 I ActivityTaskManager: Displayed com.example.goals/.MainActivity: +4s727ms
+10-29 15:14:52.816  1543  1543 I AiAiEcho: EchoSearch: AppFetcherImpl is initialized with [19] apps [time=333, reason=com.example.goals is added]
+10-29 15:14:52.884  1463  1463 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=com.example.goals fieldId=-1 fieldName=null extras=null}, false)
+10-29 15:14:53.221   485  2004 D CoreBackPreview: Window{84865df u0 Splash Screen com.example.goals}: Setting back callback null
+10-29 15:14:53.245   485  2004 W InputManager-JNI: Input channel object '84865df Splash Screen com.example.goals (client)' was disposed without first being removed with the input manager!
+10-29 15:14:54.257  3617  3617 I PathJS  : LOG PATH-INFO webgl2=true maxTex=4096 ua=Mozilla/5.0 (Linux; Android 13; sdk_gphone64_x86_64 Build/TE1A.240213.009; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/109.0.5414.123 Mobile Safari/537.36 @https://appassets.androidplatform.net/assets/path/index.html:188
+10-29 15:14:55.806  3617  3756 E chromium: [ERROR:gles2_cmd_decoder.cc(11095)] [.WebGL-0x10a80032f100]RENDER WARNING: Render count or primcount is 0.
+10-29 15:14:56.076  3617  3987 D ProfileInstaller: Installing profile for com.example.goals
+10-29 15:14:56.260   485   515 D SystemServerTimingAsync: ssm.onUnlockedUser-0_com.android.server.webkit.WebViewUpdateService
+10-29 15:14:56.260   485   515 V SystemServerTimingAsync: ssm.onUnlockedUser-0_com.android.server.webkit.WebViewUpdateService took to complete: 0ms
+10-29 15:14:59.003   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{14e7dde com.google.android.googlequicksearchbox/10119} BLOCKED
+10-29 15:14:59.003   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{796bbf com.google.android.apps.messaging/10112} BLOCKED
+10-29 15:14:59.003   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{741428c com.google.android.apps.docs/10123} BLOCKED
+10-29 15:14:59.003   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{d582dd5 com.google.android.settings.intelligence/10107} BLOCKED
+10-29 15:15:01.626   485  4282 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.webkit.WebViewUpdateService
+10-29 15:15:01.626   485  4282 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.webkit.WebViewUpdateService took to complete: 0ms
+10-29 15:15:02.555  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.getEnabledCronetProviders(PG:5)
+10-29 15:15:02.555  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.createBuilderDelegate(PG:2)
+10-29 15:15:02.555  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.<init>(PG:1)
+10-29 15:15:02.555  2913  3057 D StrictMode: 	at org.chromium.net.ExperimentalCronetEngine$Builder.<init>(PG:1)
+10-29 15:15:02.565  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.getEnabledCronetProviders(PG:5)
+10-29 15:15:02.565  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.createBuilderDelegate(PG:2)
+10-29 15:15:02.565  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.<init>(PG:1)
+10-29 15:15:02.565  2913  3057 D StrictMode: 	at org.chromium.net.ExperimentalCronetEngine$Builder.<init>(PG:1)
+10-29 15:15:02.565  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.getEnabledCronetProviders(PG:5)
+10-29 15:15:02.565  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.createBuilderDelegate(PG:2)
+10-29 15:15:02.565  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.<init>(PG:1)
+10-29 15:15:02.565  2913  3057 D StrictMode: 	at org.chromium.net.ExperimentalCronetEngine$Builder.<init>(PG:1)
+10-29 15:15:02.567  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.getEnabledCronetProviders(PG:5)
+10-29 15:15:02.567  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.createBuilderDelegate(PG:2)
+10-29 15:15:02.567  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.<init>(PG:1)
+10-29 15:15:02.567  2913  3057 D StrictMode: 	at org.chromium.net.ExperimentalCronetEngine$Builder.<init>(PG:1)
+10-29 15:15:02.568  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.getEnabledCronetProviders(PG:5)
+10-29 15:15:02.568  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.createBuilderDelegate(PG:2)
+10-29 15:15:02.568  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.<init>(PG:1)
+10-29 15:15:02.568  2913  3057 D StrictMode: 	at org.chromium.net.ExperimentalCronetEngine$Builder.<init>(PG:1)
+10-29 15:15:02.568  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.getEnabledCronetProviders(PG:5)
+10-29 15:15:02.568  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.createBuilderDelegate(PG:2)
+10-29 15:15:02.568  2913  3057 D StrictMode: 	at org.chromium.net.CronetEngine$Builder.<init>(PG:1)
+10-29 15:15:02.568  2913  3057 D StrictMode: 	at org.chromium.net.ExperimentalCronetEngine$Builder.<init>(PG:1)
+10-29 15:15:02.752  2913  3057 I cr_CronetLibraryLoader: Cronet version: 113.0.5672.51, arch: x86_64
+10-29 15:15:03.809  2913  4356 I cr_CronetUrlRequestContext: destroyNativeStreamLocked org.chromium.net.impl.CronetBidirectionalStream@7a54c8
+10-29 15:15:05.138  3617  3617 I PathJS  : WARNING [.WebGL-0x10a80032f100]RENDER WARNING: Render count or primcount is 0. @https://appassets.androidplatform.net/assets/path/index.html:0
+10-29 15:15:10.564   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{789aee9 com.google.android.youtube/10139} BLOCKED
+10-29 15:15:10.564   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{a20a76e com.android.camera2/10141} BLOCKED
+10-29 15:15:10.564   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{889d448 com.google.android.apps.maps/10142} BLOCKED
+10-29 15:15:10.564   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{ffefe0f com.google.android.apps.photos/10138} BLOCKED
+10-29 15:15:10.564   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{fca504 com.google.android.calendar/10122} BLOCKED
+10-29 15:15:10.564   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{f94ee9c com.android.remoteprovisioner/10150} BLOCKED
+10-29 15:15:13.511   485  1542 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{5eea4e6 com.google.android.gm/10144} BLOCKED
+10-29 15:15:16.114   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{da5e803 com.google.android.googlequicksearchbox/10119} BLOCKED
+10-29 15:15:16.114   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{1a6e380 com.google.android.gm/10144} BLOCKED
+10-29 15:15:19.117  4804  4804 I HibernationPolicy: ed_rro_vendor__=Thu Jan 01 00:00:00 UTC 1970, com.android.internal.systemui.navbar.twobutton=Thu Jan 01 00:00:00 UTC 1970, com.example.goals=Thu Oct 29 15:14:48 UTC 2026, com.google.android.as=Thu Oct 29 15:14:33 UTC 2026, com.google.android.gm=Thu Oct 29 15:15:13 UTC 2026, com.android.internal.systemui.navbar.gestural_extra_wide_back=Thu Jan 01 00:00:00 UTC 1970, com.google.android.permissioncontroller=Thu Oct 29 15:15:18 UTC 2026, com.android.systemui.emulation.pixel_3=Thu Jan 01 00:00:00 UTC 1970, com.android.systemui.emulation.pixel_4=Thu Jan 01 00:00:00 UTC 1970, com.android.systemui.emulation.pixel_5=Thu Jan 01 00:00:00 UTC 1970, com.android.systemui.emulation.pixel_6=Thu Jan 01 00:00:00 UTC 1970, com.android.systemui.emulation.pixel_7=Thu Jan 01 00:00:00 UTC 1970, com.google.android.setupwizard=Thu Oct 29 15:14:25 UTC 2026, com.android.emulator.radio.config=Thu Jan 01 00:00:00 UTC 1970, com.google.android.bluetooth=Thu Oct 29 15:14:18 UTC 2026, com.android.providers.settings=Thu Jan 01 00:00:00 UTC 1970, com.android.sharedstoragebackup=Thu Jan 01 00:00:00 UTC 1970, com.android.nfc.auto_generated_rro_product__=Thu Jan 01 00:00:00 UTC 1970, com.android.printspooler=Thu Oct 29 15:14:26 UTC 2026, com.android.emergency.auto_generated_rro_product__=Thu Jan 01 00:00:00 UTC 1970, com.google.android.connectivity.resources.goldfish.overlay=Thu Jan 01 00:00:00 UTC 1970, com.android.dreams.basic=Thu Jan 01 00:00:00 UTC 1970, com.google.android.networkstack.tethering.emulator=Thu Jan 01 00:00:00 UTC 1970, com.android.providers.settings.auto_generated_rro_product__=Thu Jan 01 00:00:00 UTC 1970, com.google.android.as.oss=Thu Oct 29 15:14:32 UTC 2026, com.android.se=Thu Oct 29 15:14:18 UTC 2026, com.android.inputdevices=Thu Jan 01 00:00:00 UTC 1970, com.android.traceur.auto_generated_rro_product__=Thu Jan 01 00:00:00 UTC 1970, com.google.android.apps.wellbeing=Thu Oct 29 15:14:29 UTC 2026, com.google.android.dialer=Thu Oct 29 15:15:04 UTC 2026, com.android.bips=Thu Jan 01 00:00:00 UTC 1970, com.android.internal.emulation.pixel_3=Thu Jan 01 00:00:00 UTC 1970, com.android.internal.emulation.pixel_4=Thu Jan 01 00:00:00 UTC 1970, com.android.internal.emulation.pixel_5=Thu Jan 01 00:00:00 UTC 1970, com.android.internal.emulation.pixel_6=Thu Jan 01 00:00:00 UTC 1970, com.android.internal.emulation.pixel_7=Thu Jan 01 00:00:00 UTC 1970, com.google.android.captiveportallogin=Thu Jan 01 00:00:00 UTC 1970, com.android.musicfx=Thu Jan 01 00:00:00 UTC 1970, com.google.android.apps.docs=Thu Oct 29 15:14:55 UTC 2026, com.google.android.modulemetadata=Thu Jan 01 00:00:00 UTC 1970, com.android.internal.display.cutout.emulation.emu01=Thu Jan 01 00:00:00 UTC 1970, com.google.android.markup=Thu Jan 01 00:00:00 UTC 1970, com.android.providers.settings.auto_generated_rro_vendor__=Thu Jan 01 00:00:00 UTC 1970, com.android.cellbroadcastreceiver=Thu Oct 29 15:14:20 UTC 2026, com.google.android.webview=Thu Oct 29 15:14:50 UTC 2026, com.google.android.networkstack=Thu Oct 29 15:14:18 UTC 2026, com.google.android.contacts=Thu Oct 29 15:14:30 UTC 2026, com.android.server.telecom=Thu Oct 29 15:14:17 UTC 2026, com.android.keychain=Thu Oct 29 15:14:25 UTC 2026, com.android.server.telecom.auto_generated_rro_product__=Thu Jan 01 00:00:00 UTC 1970, com.google.android.overlay.googleconfig=Thu Jan 01 00:00:00 UTC 1970, com.android.chrome=Thu Oct 29 15:14:31 UTC 2026, com.android.bips.auto_generated_rro_product__=Thu Jan 01 00:00:00 UTC 1970, com.google.android.packageinstaller=Thu Jan 01 00:00:00 UTC 1970, com.google.android.apps.customization.pixel=Thu Jan 01 00:00:00 UTC 1970, com.google.android.gms=Thu Oct 29 15:15:16 UTC 2026, com.google.android.gsf=Thu Oct 29 15:14:56 UTC 2026, com.google.android.ims=Thu Oct 29 15:14:54 UTC 2026, com.google.android.tag=Thu Jan 01 00:00:00 UTC 1970, com.google.android.tts=Thu Jan 01 00:00:00 UTC 1970, com.google.android.overlay.permissioncontroller=Thu Jan 01 00:00:00 UTC 1970, com.android.calllogbackup=Thu Jan 01 00:00:00 UTC 1970, com.google.android
+10-29 15:15:19.266   485  1906 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{4d6abeb com.google.android.settings.intelligence/10107} BLOCKED
+10-29 15:15:19.271   485   673 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{a8afd48 com.google.android.settings.intelligence/10107} BLOCKED
+10-29 15:15:20.186   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{1786b3b com.google.android.setupwizard/10116} BLOCKED
+10-29 15:15:20.186   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{b93d258 com.google.android.settings.intelligence/10107} BLOCKED
+10-29 15:15:20.186   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{5be3183 com.google.android.projection.gearhead/10108} BLOCKED
+10-29 15:15:22.210   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{b69214a com.google.android.googlequicksearchbox/10119} BLOCKED
+10-29 15:15:25.397  1075  1921 D PrefCtrlListHelper: Could not find Context-only controller for pref: com.android.settings.deviceinfo.legal.WebViewLicensePreferenceController
+10-29 15:15:25.741  3687  3735 I chromium: [INFO:audio_latency.cc(179)] audioHardwareBufferSize = 2116
+10-29 15:15:25.973  1463  1463 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x12000000 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=com.example.goals fieldId=-1 fieldName=null extras=null}, false)
+10-29 15:15:44.382   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{66d821a com.google.android.gm/10144} BLOCKED
+10-29 15:15:58.120  5433  5433 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 15:15:58.201  5433  5433 I AndroidRuntime: Using default boot image
+10-29 15:15:58.201  5433  5433 I AndroidRuntime: Leaving lock profiling enabled
+10-29 15:15:58.779  5433  5433 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-29 15:15:59.705  4473  4473 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:00.769  5485  5485 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:01.040  5433  5433 D AndroidRuntime: Shutting down VM
+10-29 15:16:02.304  5504  5504 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:02.884  5535  5535 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:03.591  5560  5560 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:04.128  5577  5577 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:04.758  5594  5594 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:04.903  5611  5611 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:05.810  5629  5629 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:06.255  5647  5647 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:06.398  5665  5665 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:06.891  5682  5682 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:07.556  5705  5705 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:07.962  5722  5722 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:08.400  5750  5750 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:08.569  5770  5770 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:09.393  5787  5787 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:09.635  5805  5805 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:18.553  5866  5866 D nativeloader: Configuring classloader-namespace for other apk /data/app/~~4g-4QuBIiEk5FHdOmJklcg==/com.google.android.trichromelibrary_541412337-vGQrvFBP5rCARmnoumn1RA==/TrichromeLibrary.apk. target_sdk_version=33, uses_libraries=ALL, library_path=/data/app/~~yVCPNplOFHGPC7qc-aYNgQ==/com.google.android.webview-OYhNLn7HyyhZjJZnrG57cA==/lib/x86_64:/data/app/~~yVCPNplOFHGPC7qc-aYNgQ==/com.google.android.webview-OYhNLn7HyyhZjJZnrG57cA==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~4g-4QuBIiEk5FHdOmJklcg==/com.google.android.trichromelibrary_541412337-vGQrvFBP5rCARmnoumn1RA==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.webview
+10-29 15:16:18.566  5866  5866 D nativeloader: Configuring classloader-namespace for other apk /data/app/~~yVCPNplOFHGPC7qc-aYNgQ==/com.google.android.webview-OYhNLn7HyyhZjJZnrG57cA==/WebViewGoogle.apk. target_sdk_version=33, uses_libraries=, library_path=/data/app/~~yVCPNplOFHGPC7qc-aYNgQ==/com.google.android.webview-OYhNLn7HyyhZjJZnrG57cA==/lib/x86_64:/data/app/~~yVCPNplOFHGPC7qc-aYNgQ==/com.google.android.webview-OYhNLn7HyyhZjJZnrG57cA==/WebViewGoogle.apk!/lib/x86_64:/data/app/~~4g-4QuBIiEk5FHdOmJklcg==/com.google.android.trichromelibrary_541412337-vGQrvFBP5rCARmnoumn1RA==/TrichromeLibrary.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.webview
+10-29 15:16:18.669  5866  5866 I cr_WebViewApkApp: Launched version=109.0.5414.123 minSdkVersion=29 isBundle=false processName=com.google.android.webview
+10-29 15:16:18.795   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{d810561 com.google.android.as/10117} BLOCKED
+10-29 15:16:20.631   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{29dfa3b com.google.android.googlequicksearchbox/10119} BLOCKED
+10-29 15:16:20.631   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{423b558 com.google.android.as/10117} BLOCKED
+10-29 15:16:20.631   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{e8536b1 com.google.android.settings.intelligence/10107} BLOCKED
+10-29 15:16:21.155   485   788 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{e4a6480 com.google.android.settings.intelligence/10107} BLOCKED
+10-29 15:16:22.994  1075  5208 D PrefCtrlListHelper: Could not find Context-only controller for pref: com.android.settings.deviceinfo.legal.WebViewLicensePreferenceController
+10-29 15:16:25.349  1075  1096 D PrefCtrlListHelper: Could not find Context-only controller for pref: com.android.settings.deviceinfo.legal.WebViewLicensePreferenceController
+10-29 15:16:41.644  6099  6099 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:42.101  6123  6123 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:42.269  3617  3617 W cr_VibrationManagerImpl: Failed to use vibrate API, requires VIBRATE permission.
+10-29 15:16:42.483  6142  6142 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:42.664  6160  6160 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:49.597  6204  6204 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:49.795  6224  6224 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:50.147  6243  6243 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:50.391  6262  6262 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:50.802  6284  6284 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:16:51.015  6304  6304 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:17:06.728  6357  6357 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:17:06.886  6381  6381 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:17:07.468  6402  6402 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:17:07.906  6420  6420 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:17:08.099  6438  6438 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:17:10.853   485   538 I AppsFilter: interaction: PackageSetting{9d09518 com.example.goals/10174} -> PackageSetting{e7b93f6 com.google.android.apps.messaging/10112} BLOCKED
+10-29 15:17:14.622  6530  6530 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:17:14.928  6548  6548 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:17:35.619  6946  6946 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:17:35.836  6969  6969 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:17:35.849  6685  6791 I cr_CronetLibraryLoader: Cronet version: 113.0.5672.51, arch: x86_64
+10-29 15:17:56.133  7107  7107 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:17:59.746  7162  7162 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:18:02.455  7181  7181 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:18:05.967  7244  7244 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:18:06.141  7267  7267 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:18:06.655  7284  7284 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:18:25.816  7391  7391 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:18:26.106  7411  7411 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:18:26.269  7427  7427 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:18:26.429  7444  7444 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-29 15:18:39.647   485  1521 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=com.example.goals/.DemoActivity} from uid 0
+10-29 15:18:40.235   485   507 W ActivityTaskManager: Activity top resumed state loss timeout for ActivityRecord{798dfd2 u0 com.example.goals/.MainActivity} t9}
+10-29 15:18:40.240   485   507 W ActivityTaskManager: Activity pause timeout for ActivityRecord{798dfd2 u0 com.example.goals/.MainActivity} t9}
+10-29 15:18:40.521   485  1521 D CoreBackPreview: Window{256621a u0 com.example.goals/com.example.goals.DemoActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@8c1f728, mPriority=0}
+10-29 15:18:40.643   485   504 I ActivityTaskManager: Displayed com.example.goals/.DemoActivity: +1s30ms
+10-29 15:18:40.816  1463  1463 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=com.example.goals fieldId=-1 fieldName=null extras=null}, false)
+10-29 15:18:41.548  3617  3617 I PathJS  : LOG PATH-INFO webgl2=true maxTex=4096 ua=Mozilla/5.0 (Linux; Android 13; sdk_gphone64_x86_64 Build/TE1A.240213.009; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/109.0.5414.123 Mobile Safari/537.36 @https://appassets.androidplatform.net/assets/path/index.html?demo=1:188
+10-29 15:18:41.988  3617  3756 E chromium: [ERROR:gles2_cmd_decoder.cc(11095)] [.WebGL-0x10a80193e200]RENDER WARNING: Render count or primcount is 0.
+10-29 15:18:48.655  3617  3617 I PathJS  : WARNING [.WebGL-0x10a80193e200]RENDER WARNING: Render count or primcount is 0. @https://appassets.androidplatform.net/assets/path/index.html?demo=1:0
+10-29 15:19:06.070  3687  3735 I chromium: [INFO:audio_latency.cc(179)] audioHardwareBufferSize = 2116
+10-29 15:19:06.198  1463  1463 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x12000000 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=com.example.goals fieldId=-1 fieldName=null extras=null}, false)

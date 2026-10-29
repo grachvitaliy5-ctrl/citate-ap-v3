@@ -1,0 +1,2 @@
+{"id":1,"result":{"result":{"type":"number","value":1,"description":"1"}}}
+{"id":1,"result":{"result":{"type":"string","value":"{\"p\":{\"n\":1,\"goal\":\"\u0422\u0435\u0441\u0442\",\"total\":1,\"L\":0,\"done\":0,\"misses\":0,\"lock\":0,\"wins\":0},\"b\":\"mount\",\"s\":{\"id\":1,\"num\":2,\"actions\":0,\"N\":63,\"busy\":false,\"ready\":true,\"g\":0.95,\"root\":0.59,\"soil\":0,\"pose\":\"idle\",\"mode\":\"island\",\"st\":\"ggg\",\"ruined\":false,\"rain\":0,\"isl\":2,\"coll\":0}}"}}}
