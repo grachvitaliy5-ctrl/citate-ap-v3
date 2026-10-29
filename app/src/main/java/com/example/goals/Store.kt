@@ -131,6 +131,21 @@ class Store(ctx: Context) {
 
     fun setSound(fn: String, v: String) = p.edit().putString("snd_$fn", v).apply()
 
+    /** Чёткость сцены: 0 — пиксельно, 1 — средне, 2 — чётко. */
+    var sceneQuality: Int
+        get() = p.getInt("scene_quality", 1)
+        set(v) {
+            p.edit().putInt("scene_quality", v).apply()
+        }
+
+    /** Случайная включённая цитата для слов самурая. */
+    fun randomQuote(): String {
+        val q = load("quotes").filter { it.enabled }
+        if (q.isEmpty()) return ""
+        val i = q.random()
+        return "«${i.text}»" + if (i.author.isNotBlank()) "\n— ${i.author}" else ""
+    }
+
     // ---------- Настройки рутин ----------
 
     /** Час начала нового дня для рутин: 0 или 4 */

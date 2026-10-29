@@ -33,6 +33,12 @@ class PathBridge(context: Context) {
     fun today(): Int = Store(ctx).today().toInt()
 
     @JavascriptInterface
+    fun quality(): Int = Store(ctx).sceneQuality
+
+    @JavascriptInterface
+    fun quote(): String = Store(ctx).randomQuote()
+
+    @JavascriptInterface
     fun pending(): String = Store(ctx).pendingJson()
 
     @JavascriptInterface

@@ -88,12 +88,14 @@ fun SettingsScreen(resumeTick: Int) {
         ) {
             GhostButton("Проверить цели", {
                 Thread {
-                    if (Notifier.showItems(ctx, "goals")) Notifier.playCustom(ctx, "goals")
+                    if (!Notifier.showItems(ctx, "goals")) Notifier.showTest(ctx, "goals")
+                    Notifier.playCustom(ctx, "goals")
                 }.start()
             }, Modifier.weight(1f))
             GhostButton("Проверить цитаты", {
                 Thread {
-                    if (Notifier.showItems(ctx, "quotes")) Notifier.playCustom(ctx, "quotes")
+                    if (!Notifier.showItems(ctx, "quotes")) Notifier.showTest(ctx, "quotes")
+                    Notifier.playCustom(ctx, "quotes")
                 }.start()
             }, Modifier.weight(1f))
         }
@@ -124,6 +126,19 @@ fun SettingsScreen(resumeTick: Int) {
 
         SectionLabel("Сцена")
         WoodPanel {
+        Text(
+            "Чёткость сцены", style = Type.caption, color = c.muted,
+            modifier = Modifier.padding(bottom = Space.s)
+        )
+        Segmented(
+            listOf(0 to "Пиксельно", 1 to "Средне", 2 to "Чётко"), if (refresh >= 0) store.sceneQuality else 1,
+            { store.sceneQuality = it; tick++ }
+        )
+        Text(
+            "Меняется при возврате на вкладку «Путь».",
+            style = Type.caption, color = c.muted,
+            modifier = Modifier.padding(top = Space.xs, bottom = Space.s)
+        )
         Row(Modifier.fillMaxWidth()) {
             GhostButton("Открыть демо сцены", {
                 ctx.startActivity(Intent(ctx, DemoActivity::class.java))
@@ -157,6 +172,16 @@ fun SettingsScreen(resumeTick: Int) {
                     Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:${ctx.packageName}"))
                 )
             }
+        }
+        if (Build.MANUFACTURER.lowercase().let { it.contains("xiaomi") || it.contains("redmi") || it.contains("poco") }) {
+            Text(
+                "Xiaomi: если уведомления приходят без звука, откройте «Уведомления» → каждую категорию " +
+                    "(Цели, Цитаты, Рутины, Заметки) и включите «Звук». Также включите «Автозапуск».",
+                style = Type.caption, color = c.yellow,
+                modifier = Modifier.padding(vertical = Space.s)
+            )
+            GhostButton("Автозапуск (Xiaomi)", { openMiuiAutostart(ctx) }, Modifier.fillMaxWidth())
+            Spacer(Modifier.height(Space.s))
         }
         PermissionRow("Работа без ограничений батареи", batteryOk) {
             ctx.startActivity(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
@@ -264,5 +289,20 @@ fun PermissionRow(title: String, ok: Boolean, onFix: () -> Unit) {
             style = Type.body,
             color = if (ok) c.green else c.accent
         )
+    }
+}
+
+/** Экран автозапуска MIUI; если его нет, открываются настройки приложения. */
+fun openMiuiAutostart(ctx: Context) {
+    val i = Intent().setComponent(
+        android.content.ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity")
+    )
+    try {
+        ctx.startActivity(i)
+    } catch (e: Exception) {
+        try {
+            ctx.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:${ctx.packageName}")))
+        } catch (e2: Exception) {
+        }
     }
 }

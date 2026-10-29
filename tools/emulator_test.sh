@@ -18,6 +18,12 @@ PID=$(adb shell pidof $PKG | tr -d '\r')
 adb forward tcp:9222 localabstract:webview_devtools_remote_$PID
 sleep 2
 node tools/cdp_probe.js $OUT > $OUT/cdp.txt 2>&1
+# бой с главной маской: перенос к воротам с запасом светлячков
+node tools/cdp_eval.js "window.__p.addLight(30);window.__p.toGate('Тест',1);1" > $OUT/gate.txt 2>&1
+for t in 35 45 55 65 80; do sleep 10; [ $t -ge 45 ] && adb exec-out screencap -p > $OUT/40_duel_$t.png; done
+sleep 15
+adb exec-out screencap -p > $OUT/41_after_duel.png
+node tools/cdp_eval.js "JSON.stringify({p:window.__p.path(),b:window.__p.boss(),s:window.__p.state()})" >> $OUT/gate.txt 2>&1
 sleep 20
 adb exec-out screencap -p > $OUT/03_ready.png
 # вкладки внизу: 5 штук
@@ -32,6 +38,11 @@ sleep 8
 adb exec-out screencap -p > $OUT/20_back_to_path.png
 # сравнение: та же сцена в простой Activity без Compose
 adb root; sleep 3
+# уведомление: вечернее напоминание рутин и проверка звука каналов
+adb shell am broadcast -n $PKG/.AlarmReceiver --es kind evening
+sleep 6
+adb shell dumpsys notification --noredact > $OUT/notifications.txt
+adb exec-out screencap -p > $OUT/25_after_notify.png
 adb shell am start -n $PKG/.DemoActivity
 sleep 25
 adb exec-out screencap -p > $OUT/30_demo.png

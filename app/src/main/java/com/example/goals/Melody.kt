@@ -221,7 +221,7 @@ object Melody {
     }
 
     fun welcomeUri(ctx: Context): Uri =
-        Uri.parse("android.resource://${ctx.packageName}/${R.raw.samurai_welcome}")
+        Uri.parse("android.resource://${ctx.packageName}/raw/samurai_welcome")
 
     /** Прослушать мелодию приветствия самурая (она же звук по умолчанию). */
     fun previewWelcome(ctx: Context) {

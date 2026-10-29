@@ -17,16 +17,17 @@ import android.media.AudioAttributes
  * (Melody.playBlocking) при показе уведомления, а канал при этом беззвучный.
  */
 object Notifier {
-    const val CH_GOALS = "goals_sound_v4"
+    const val CH_GOALS = "goals_sound_v5"
     const val CH_GOALS_SILENT = "goals_silent_v1"
-    const val CH_QUOTES = "quotes_sound_v1"
+    const val CH_QUOTES = "quotes_sound_v2"
     const val CH_QUOTES_SILENT = "quotes_silent_v1"
-    const val CH_ROUTINES = "routines_sound_v1"
+    const val CH_ROUTINES = "routines_sound_v2"
     const val CH_ROUTINES_SILENT = "routines_silent_v1"
-    const val CH_NOTES = "notes_sound_v1"
+    const val CH_NOTES = "notes_sound_v2"
     const val CH_NOTES_SILENT = "notes_silent_v1"
     private val OLD_CHANNELS = listOf(
-        "reminders", "goals_sound_v1", "goals_sound_v2", "goals_sound_v3", "quotes_v1", "routines_v1"
+        "reminders", "goals_sound_v1", "goals_sound_v2", "goals_sound_v3", "goals_sound_v4", "quotes_v1", "routines_v1",
+        "quotes_sound_v1", "routines_sound_v1", "notes_sound_v1"
     )
 
     private const val ID_GOALS = 1
@@ -136,6 +137,23 @@ object Notifier {
             .setStyle(Notification.BigTextStyle().bigText(body))
             .build()
         nm.notify(if (kind == "goals") ID_GOALS else ID_QUOTES, n)
+        return true
+    }
+
+    /** Проверка звука: уведомление приходит всегда, даже если список пуст. */
+    fun showTest(ctx: Context, fn: String): Boolean {
+        val nm = ctx.getSystemService(NotificationManager::class.java)
+        val title = when (fn) {
+            "goals" -> "Проверка: цели"
+            "quotes" -> "Проверка: цитаты"
+            "routines" -> "Проверка: рутины"
+            else -> "Проверка: заметки"
+        }
+        val n = builder(ctx, fn, TAB_PATH)
+            .setContentTitle(title)
+            .setContentText("Так звучит уведомление.")
+            .build()
+        nm.notify(30_000 + fn.hashCode() % 1000, n)
         return true
     }
 
