@@ -111,7 +111,7 @@ body{margin:0;background:var(--night);color:var(--text);font-family:var(--body);
 #err{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;font-size:16px;color:var(--text);background:var(--night);z-index:9}
 @media (prefers-reduced-motion:reduce){.sub,.panel,.bars,.title{transition:none}.tap{animation:none}}
 @media (max-height:680px){.act{padding:6px 3px 7px;font-size:14px}.stage{font-size:17px}.hint{font-size:13px}}
-body:not(.demo) #demo,body:not(.demo) #newday{display:none!important}
+body:not(.demo) #demo,body:not(.demo) #newday,body:not(.demo) #dgate{display:none!important}
 .goal{font-size:13px;color:var(--sakura);margin-top:3px;line-height:1.2;max-width:230px}
 .gdays{font-family:var(--pix);font-size:8px;color:var(--gold);line-height:1.6}
 #gGoal{font-family:var(--body);font-size:16px;color:var(--ink);background:var(--paper);border:2px solid #120a07;padding:5px 7px;resize:none}
@@ -135,7 +135,7 @@ html,body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
     <div class="brand">ПУТЬ</div>
     <div class="hud-r">
       <button class="chip" id="tod" title="Время суток: авто по часам или вручную">АВТО</button>
-      <button class="chip" id="demo" title="Демо: перемотать почти до конца цикла">▸▸ ДЕМО</button>
+      <button class="chip" id="demo" title="Демо: перемотать почти до конца цикла">▸▸ ДЕМО</button><button class="chip" id="dgate" title="Демо: сразу к воротам и бою">⛩ ВОРОТА</button>
       <button class="chip" id="snd" aria-pressed="true" title="Звук">ЗВУК</button>
     </div>
   </header>
@@ -945,7 +945,8 @@ $('edit').addEventListener('click',function(){if(busy())return;renderEd();render
 $('phW').addEventListener('input',function(e){PHR.welcome=e.target.value.trim()||'Тебя-то я и ждал.';savePhr()});
 $('phB').addEventListener('input',function(e){PHR.bow=e.target.value.trim()||'У всего есть свой цикл.';savePhr()});
 $('list').addEventListener('click',function(e){var b=e.target.closest('.act');if(!b||ops.length)return;var i=+b.getAttribute('data-i');doAction(i);trySave(true)});
-$('newday').addEventListener('click',newDay);
+$('newday').addEventListener('click',function(){if(!ready||busy())return;if(lastDay==null)lastDay=nToday();lastDay++;newDay();setTimeout(planDays,600)});
+$('dgate').addEventListener('click',function(){if(!ready||busy())return;var C=curI();if(C.gate){planDays();return}if(!PATH.total){PATH.goal='Демо-путь';PATH.total=1}PATH.done=PATH.total-1;var J=ISL[ensureNext(C)];makeGate(J);run(crossSeq(C,J,false))});
 $('coll').addEventListener('click',function(e){var b=e.target.closest('button');if(!b||!AC)return;var c=collection[+b.getAttribute('data-k')];playMelody(c.notes,c.L,null,null)});
 $('cyc').addEventListener('click',function(e){var b=e.target.closest('button');if(!b||busy())return;var I=curI();if(I.actions>0)return;var L=[4,12,21].indexOf(+b.dataset.d);LEVEL=L;PATH.L=L;buildTree(I,L);buildLanterns(I);renderUI()});
 $('tod').addEventListener('click',function(){todMode=(todMode+1)%5;updTod()});
@@ -1145,7 +1146,7 @@ function passGateSeq(J){J.done=true;var old=PATH;PATH={n:old.n+1,goal:'',total:0
 
 /* ================= persistence, real days, queued ops ================= */
 var NA=window.Android||null,DEMO=/[?&]demo=1/.test(location.search),lastDay=null,lastWelcome=-1,ops=[],lastSaved='',saveT=0,SNAP=null;
-if(DEMO)document.body.classList.add('demo');
+if(DEMO){document.body.classList.add('demo');PATH.goal='Демо-путь';PATH.total=2}
 function hhmm(m){m=((m|0)%1440+1440)%1440;var h=Math.floor(m/60),mm=m%60;return (h<10?'0':'')+h+':'+(mm<10?'0':'')+mm}
 function nToday(){try{if(NA)return +NA.today()}catch(e){}if(window.__today!=null)return window.__today;return Math.floor((Date.now()-new Date().getTimezoneOffset()*60000)/864e5)}
 function nPending(){try{if(NA)return JSON.parse(NA.pending()||'[]');var p=localStorage.getItem('path.pending');return p?JSON.parse(p):[]}catch(e){return []}}
@@ -1198,8 +1199,12 @@ function restoreAll(s){
   var I=curI();if(I&&!I.ruined)for(var id in I.lan){var rt=routines.filter(function(r){return r.id==id})[0];I.lan[id].on=!!(rt&&rt.d);I.lan[id].lit=I.lan[id].on?1:0}}
 /* what has to happen on the real calendar: pending marks from notifications, then one "new day" per elapsed day */
 function planDays(){
-  if(DEMO||!ready||busy()||ops.length)return;
+  if(!ready||busy()||ops.length)return;
   var td=nToday(),C=curI();if(lastDay==null)lastDay=td;
+  if(DEMO){/* в демо дни листаются кнопкой, но ворота и бой работают как в настоящем пути */
+    if(C.gate&&C.gateOpen){if(!C.done)run(passGateSeq(C))}
+    else if(C.gate&&!(PATH.lock&&lastDay<PATH.lock))run(bossSeq(C));
+    renderUI();return}
   if(C.ruined){run(leaveSeq(C,C.parent>=0?ISL[C.parent]:null));renderUI();return}
   if(C.planted&&worstSt()==='r'){run(ruinSeq(C));renderUI();return}
   if(C.gate&&C.gateOpen){if(!C.done)run(passGateSeq(C));else{var gx=C.next!=null?ISL[C.next]:null;if(!gx||gx.dead){gx=spawn(C,null);C.next=gx.id}run(crossSeq(C,gx,false))}renderUI();return}
