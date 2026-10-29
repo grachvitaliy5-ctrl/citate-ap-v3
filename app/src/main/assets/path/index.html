@@ -111,7 +111,7 @@ body{margin:0;background:var(--night);color:var(--text);font-family:var(--body);
 #err{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;font-size:16px;color:var(--text);background:var(--night);z-index:9}
 @media (prefers-reduced-motion:reduce){.sub,.panel,.bars,.title{transition:none}.tap{animation:none}}
 @media (max-height:680px){.act{padding:6px 3px 7px;font-size:14px}.stage{font-size:17px}.hint{font-size:13px}}
-body:not(.demo) #demo,body:not(.demo) #newday,body:not(.demo) #dgate{display:none!important}
+body:not(.demo) #demo,body:not(.demo) #newday,body:not(.demo) #dgate,body:not(.demo) #skipday{display:none!important}
 .goal{font-size:13px;color:var(--sakura);margin-top:3px;line-height:1.2;max-width:230px}
 .gdays{font-family:var(--pix);font-size:8px;color:var(--gold);line-height:1.6}
 #gGoal{font-family:var(--body);font-size:16px;color:var(--ink);background:var(--paper);border:2px solid #120a07;padding:5px 7px;resize:none}
@@ -136,7 +136,7 @@ html,body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
     <div class="hud-r">
       <button class="chip" id="tod" title="Время суток: авто по часам или вручную">АВТО</button>
       <button class="chip" id="demo" title="Демо: перемотать почти до конца цикла">▸▸ ДЕМО</button><button class="chip" id="dgate" title="Демо: сразу к воротам и бою">⛩ ВОРОТА</button>
-      <button class="chip" id="snd" aria-pressed="true" title="Звук">ЗВУК</button>
+      <button class="chip" id="gyro" aria-pressed="true" title="Камера следует за наклоном телефона">НАКЛОН</button><button class="chip" id="snd" aria-pressed="true" title="Звук">ЗВУК</button>
     </div>
   </header>
   <div class="title" id="title">ПУ<em>Т</em>Ь</div>
@@ -151,7 +151,7 @@ html,body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
     <div class="staff" id="mel" aria-label="Собранные ноты"></div>
     <div class="hint" id="hint"></div>
     <div class="acts" id="list"></div>
-    <div class="foot"><div class="coll" id="coll"></div><div class="fbtn"><button class="pbtn ghost" id="edit">✎ РЕДАКТОР</button><button class="pbtn" id="newday" hidden>НОВЫЙ ДЕНЬ ▸</button></div></div>
+    <div class="foot"><div class="coll" id="coll"></div><div class="fbtn"><button class="pbtn ghost" id="edit">✎ РЕДАКТОР</button><button class="pbtn ghost" id="skipday">ПРОПУСК ▸</button><button class="pbtn" id="newday" hidden>НОВЫЙ ДЕНЬ ▸</button></div></div>
   </section>
   <div class="ed" id="ed" hidden><div class="sheet" role="dialog" aria-label="Редактор рутин"><div class="lbl">РУТИНЫ И ФОНАРИ</div><div id="edList"></div><div class="lbl">ЦЕЛЬ ПУТИ</div><label class="elab">К ЧЕМУ ИДЁТ САМУРАЙ<textarea id="gGoal" rows="2" maxlength="90" placeholder="Например: выучить японский"></textarea></label><div class="eopt3"><label class="elab">ДНЕЙ НА ОСТРОВ<select id="gCyc"><option value="0">4</option><option value="1">12</option><option value="2">21</option></select></label><label class="elab">ОСТРОВОВ ДО ВОРОТ<select id="gIsl"></select></label></div><div class="gdays" id="gDays"></div><div class="lbl">ФРАЗЫ САМУРАЯ</div><label class="elab">ПРИВЕТСТВИЕ (ПРОЗВУЧИТ ПРИ СЛЕДУЮЩЕМ ВХОДЕ)<textarea id="phW" rows="2" maxlength="80"></textarea></label><label class="elab">ПРИ ПОКЛОНЕ<textarea id="phB" rows="2" maxlength="80"></textarea></label><div class="foot"><button class="pbtn ghost" id="edAdd">+ ДОБАВИТЬ</button><button class="pbtn" id="edOk">ГОТОВО</button></div></div></div>
   <div class="duel" id="duel" hidden><div class="drow"><span>СВЕТ</span><i><b id="dL"></b></i><em id="dLn">0</em></div><div class="drow dark"><span>ТЬМА</span><i><b id="dD"></b></i><em id="dDn">0</em></div></div>
@@ -725,7 +725,7 @@ function updCamera(dt){
   var drift=(performance.now()-lastInput>2500)?Math.sin(T*.08)*.2:0;tilt.x+=((tilt.tx+drift)-tilt.x)*(1-Math.pow(.04,dt));tilt.y+=(tilt.ty-tilt.y)*(1-Math.pow(.04,dt));
   var k=1-Math.pow(.12,dt);cam.tgt.lerp(camGoal.tgt,k);cam.dist+=(camGoal.dist-cam.dist)*k;cam.yaw+=angDiff(cam.yaw,camGoal.yaw)*k;cam.pitch+=(camGoal.pitch-cam.pitch)*k;
   cam.kick*=Math.pow(.03,dt);shake=Math.max(0,shake-dt*5);
-  var d=cam.dist*(1-cam.kick),yw=cam.yaw+tilt.x*.14,pt=cam.pitch+tilt.y*.05;
+  var d=cam.dist*(1-cam.kick),yw=cam.yaw+tilt.x*.14,pt=clamp(cam.pitch+tilt.y*.06,.02,1.2);
   camera.position.set(cam.tgt.x+Math.sin(yw)*Math.cos(pt)*d,cam.tgt.y+Math.sin(pt)*d,cam.tgt.z+Math.cos(yw)*Math.cos(pt)*d);
   var sx=shake>0&&!reduce?(Math.random()-.5)*shake*.08:0,sy=shake>0&&!reduce?(Math.random()-.5)*shake*.08:0;
   camera.lookAt(cam.tgt.x+sx,cam.tgt.y+sy,cam.tgt.z);
@@ -886,7 +886,7 @@ function leaveSeq(I,par){var J=null,tgt;
     S('idle',1,{start:function(){sub('Назад, к прошлому острову.\nОтсюда — новая ветка.',2.8)}}),
     later(function(){var J2=spawn(par,angTo(par,I));par.next=J2.id;return crossSeq(par,J2,false)})]);
   return seq.concat([call(function(){arrive(J)})],arrivalSteps(J,'Остров '+roman(J.num)+'.\nНовая ветка.'))}
-function newDay(){if(!ready||busy())return;var I=curI(),misses=0,mtypes=[];day++;
+function newDay(skipAll){if(!ready||busy())return;var I=curI(),misses=0,mtypes=[];day++;if(skipAll===true)routines.forEach(function(rt){rt.d=false});
   if(I.gate){routines.forEach(function(rt){var o=I.lan[rt.id];if(!rt.d)misses++;rt.d=false;if(o)o.on=false});PATH.misses+=misses;resetStatuses();I.status='g';
     if(misses){sfx.minor();sub('Пропуск.\nГлавная маска крепнет.',2.6)}renderMel();renderUI();return}
   routines.forEach(function(rt){var o=I.lan[rt.id];
@@ -923,7 +923,7 @@ function renderUI(){
   $('cyc').hidden=I.actions>0||I.gate;var cb=$('cyc').querySelectorAll('button');for(var k=0;k<cb.length;k++)cb[k].setAttribute('aria-pressed',String(+cb[k].dataset.d===LEVELS[I.L].days));
   var h='';routines.forEach(function(r,i){h+='<button class="act" style="--c:'+r.color+'" data-i="'+i+'" title="'+esc(r.t)+'" aria-label="'+esc(r.t)+'" aria-pressed="'+r.d+'"'+((r.d||b)?' disabled':'')+'><i class="st '+r.st+'"></i><svg viewBox="0 0 12 12" fill="#2a1a12" aria-hidden="true">'+(ICONS[r.type]||ICONS.other)+'</svg><span>'+esc(r.t)+'</span></button>'});
   $('list').innerHTML=h;$('list').style.setProperty('--cols',Math.min(3,routines.length));
-  $('newday').hidden=!ready;$('newday').disabled=b;$('newday').title=left?'Не зажжено фонарей: '+left+' — это будет пропуск':'';$('edit').disabled=b;
+  $('newday').hidden=!ready;$('skipday').disabled=b;$('newday').disabled=b;$('newday').title=left?'Не зажжено фонарей: '+left+' — это будет пропуск':'';$('edit').disabled=b;
 }
 function renderMel(){var I=curI(),all=melWithMiss(I),h='',n0=Math.max(0,all.length-24);for(var k=0;k<24;k++){var n=all[n0+k],left=(k+.5)/24*100;h+='<i class="'+(n?(n.bad?'bad':'on'):'')+(n&&n.fx?' fx':'')+'" style="left:'+left+'%;bottom:'+(n?2+n.i*2:2)+'px"></i>'}$('mel').innerHTML=h}
 function markMel(k){var els=$('mel').children;for(var j=0;j<els.length;j++)els[j].classList.toggle('hot',j===k%24)}
@@ -946,6 +946,7 @@ $('phW').addEventListener('input',function(e){PHR.welcome=e.target.value.trim()|
 $('phB').addEventListener('input',function(e){PHR.bow=e.target.value.trim()||'У всего есть свой цикл.';savePhr()});
 $('list').addEventListener('click',function(e){var b=e.target.closest('.act');if(!b||ops.length)return;var i=+b.getAttribute('data-i');doAction(i);trySave(true)});
 $('newday').addEventListener('click',function(){if(!ready||busy())return;if(lastDay==null)lastDay=nToday();lastDay++;newDay();setTimeout(planDays,600)});
+$('skipday').addEventListener('click',function(){if(!ready||busy())return;var I=curI();if(!I.planted&&!I.gate){sub('Сначала зажги хотя бы один фонарь:\nдо посадки пропуски не считаются.',3);return}if(lastDay==null)lastDay=nToday();lastDay++;newDay(true);setTimeout(planDays,600)});
 $('dgate').addEventListener('click',function(){if(!ready||busy())return;var C=curI();if(C.gate){planDays();return}if(!PATH.total){PATH.goal='Демо-путь';PATH.total=1}PATH.done=PATH.total-1;var J=ISL[ensureNext(C)];makeGate(J);run(crossSeq(C,J,false))});
 $('coll').addEventListener('click',function(e){var b=e.target.closest('button');if(!b||!AC)return;var c=collection[+b.getAttribute('data-k')];playMelody(c.notes,c.L,null,null)});
 $('cyc').addEventListener('click',function(e){var b=e.target.closest('button');if(!b||busy())return;var I=curI();if(I.actions>0)return;var L=[4,12,21].indexOf(+b.dataset.d);LEVEL=L;PATH.L=L;buildTree(I,L);buildLanterns(I);renderUI()});
@@ -957,6 +958,13 @@ $('demo').addEventListener('click',function(){if(!ready||busy())return;var I=cur
   while(I.actions<NN-1){I.notes.push(nextNote(I.id,I.actions,I.notes[I.notes.length-1],I.notes[I.notes.length-2],I.L));I.actions++}
   day=days;routines.forEach(function(rt,k){var o=I.lan[rt.id];rt.d=k>0;o.on=rt.d;o.ff=k===0?days-1:days});
   I.planted=true;applyGrowth(I,NN-2,NN);sam.pose='idle';sam.lookAt=treeW(I);renderMel();renderUI();sub('Демо: остался один фонарь',2.4)});
+var gyroOn=true;try{gyroOn=localStorage.getItem('path.gyro')!=='0'}catch(e){}
+function updGyroChip(){$('gyro').setAttribute('aria-pressed',String(gyroOn))}updGyroChip();
+$('gyro').addEventListener('click',function(){gyroOn=!gyroOn;try{localStorage.setItem('path.gyro',gyroOn?'1':'0')}catch(e){}updGyroChip();if(!gyroOn){tilt.tx=0;tilt.ty=0}});
+var gBase=null;
+window.addEventListener('deviceorientation',function(e){if(!gyroOn||reduce||e.gamma==null||e.beta==null)return;
+  if(!gBase)gBase={g:e.gamma,b:e.beta};gBase.g+=(e.gamma-gBase.g)*.004;gBase.b+=(e.beta-gBase.b)*.004;
+  tilt.tx=clamp((e.gamma-gBase.g)/14,-2.4,2.4);tilt.ty=clamp((e.beta-gBase.b)/16,-2,2);lastInput=performance.now()});
 app.addEventListener('pointermove',function(e){var r=app.getBoundingClientRect();tilt.tx=((e.clientX-r.left)/r.width-.5)*2;tilt.ty=((e.clientY-r.top)/r.height-.5)*2;lastInput=performance.now()});
 app.addEventListener('pointerleave',function(){tilt.tx=0;tilt.ty=0});
 updTod();setInterval(updTod,60000);
